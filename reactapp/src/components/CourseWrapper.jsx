@@ -117,12 +117,12 @@ export const CourseWrapper = () => {
               ) : (
                 <tr className='nav-item'>
                     <td>
-                        <Link to='/courseobjective' className='nav-link' onClick={() => setUpCourses(course)}>
+                        <Link to='/courseinfo' className='nav-link' onClick={() => setUpCourses(course)}>
                         <span>{course.code}</span>
                         </Link>
                     </td>
                     <td>
-                        <Link to='/courseobjective' className='nav-link' onClick={() => setUpCourses(course)}>
+                        <Link to='/courseinfo' className='nav-link' onClick={() => setUpCourses(course)}>
                         <span>{course.title}</span>
                         </Link>
                     </td>

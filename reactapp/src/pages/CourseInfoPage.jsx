@@ -1,11 +1,10 @@
 import React from 'react'
-import { CourseInfoWrapper } from '../components/CourseInfoWrapper'
-import { Sidebar } from '../components/Sidebar'
+import { CourseInfoForm } from '../components/CourseInfoForm'
 
 export const CourseInfoPage = () => {
   return (
     <div className='container-fluid g-0 Page'>
-      <CourseInfoWrapper/>
+      <CourseInfoForm/>
     </div>
   )
 }

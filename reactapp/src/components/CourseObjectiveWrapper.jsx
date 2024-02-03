@@ -129,7 +129,7 @@ export const CourseObjectiveWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/course'>
+              <Link to='/courseinfo'>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

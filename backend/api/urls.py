@@ -18,4 +18,6 @@ router.register(r'api/clomapplo', CloMapPloViewSet, basename='clomapplo')
 router.register(r'api/curriculum', CurriculumViewSet, basename='curriculum')
 router.register(r'api/syllabus', SyllabusViewSet, basename='syllabus')
 router.register(r'api/course', CourseViewSet, basename='course')
+router.register(r'api/assess', AssessViewSet, basename='assess')
+router.register(r'api/courseinfo', CourseInfoViewSet, basename='courseinfo')
 urlpatterns = router.urls

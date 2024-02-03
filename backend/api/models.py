@@ -124,5 +124,52 @@ class CloMapPlo(models.Model):
 
     def __str__(self):
         return f"{self.upCourse} - {self.clo} - {self.plo} - {self.correlation_level}"  
+    
+class CourseInfo(models.Model):
+    upCourse=models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    course_code = models.CharField(max_length=255)
+    credit = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    prerequisites = models.CharField(max_length=255 , null=True, blank=True)
+    type = models.CharField(max_length=255)
+    contact_hours = models.IntegerField()
+    total_lectures = models.IntegerField()
+    class_tests = models.IntegerField()
+    final_exam = models.IntegerField()
+    faculty = models.CharField(max_length=255)
+    rationale = models.TextField()
+
+    def __str__(self):
+        return f"{self.course_code} - {self.credit} - {self.title} - {self.prerequisites} - {self.type} - {self.contact_hours} -{self.total_lectures} - {self.class_tests}  - {self.final_exam} -{self.faculty} - {self.rationale}" 
+    
+class Assessment(models.Model):
+    upCourse=models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    rem_fest= models.IntegerField()
+    rem_assign= models.IntegerField()
+    rem_exper= models.IntegerField()
+    rem_final= models.IntegerField()
+    un_fest= models.IntegerField()
+    un_assign= models.IntegerField()
+
+    un_exper= models.IntegerField()
+    un_final= models.IntegerField()
+    apply_fest= models.IntegerField()
+    apply_assign= models.IntegerField()
+    apply_exper= models.IntegerField()
+    apply_final= models.IntegerField()
+    analyze_fest= models.IntegerField()
+    analyze_assign= models.IntegerField()
+
+    analyze_exper= models.IntegerField()
+    analyze_final= models.IntegerField()
+    eva_fest= models.IntegerField()
+    eva_assign= models.IntegerField()
+    eva_exper= models.IntegerField()
+    eva_final= models.IntegerField()
+
+    c_fest= models.IntegerField()
+    c_assign= models.IntegerField()
+    c_exper= models.IntegerField()
+    c_final= models.IntegerField()
 
 

@@ -83,5 +83,15 @@ class SyllabusSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = '__all__'      
+        fields = '__all__'   
+
+class AssessmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assessment
+        fields = '__all__'   
+
+class CourseInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseInfo
+        fields = '__all__'   
 

@@ -130,4 +130,20 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Course.objects.filter(upSyllabus=up_syllabus_id)
 
         return Course.objects.all()       
+    
+class AssessViewSet(viewsets.ModelViewSet):
+    serializer_class = AssessmentSerializer 
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return Assessment.objects.filter(upCourse=up_course_id)
+        return Assessment.objects.all()    
+    
+class CourseInfoViewSet(viewsets.ModelViewSet):
+    serializer_class = CourseInfoSerializer 
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return CourseInfo.objects.filter(upCourse=up_course_id)
+        return CourseInfo.objects.all()  
 

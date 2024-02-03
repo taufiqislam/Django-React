@@ -1,12 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import logo from './logos/JU_logo2.png';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
+import DataContext from './Context/DataContext';
 export const CloMapPloTable = () => {
 
   const [clos, setClos] = useState([]);
+  const {upCurriculums} = useContext(DataContext);
+  const {upSyllabuses} = useContext(DataContext);
+  const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/clo/")
+    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${upCourses.id}`)
       .then((res) => {
         setClos(res.data)
       }).catch(() => {
@@ -16,7 +20,7 @@ export const CloMapPloTable = () => {
 
   const [plos, setPlos] = useState([]);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/plo/")
+    axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${upSyllabuses.id}`)
       .then((res) => {
         setPlos(res.data)
       }).catch(() => {
@@ -36,7 +40,7 @@ const isComplete = () => {
 
 
 useEffect(() => {
-  axios.get("http://127.0.0.1:8000/api/clomapplo/")
+  axios.get(`http://127.0.0.1:8000/api/clomapplo/?upCourse=${upCourses.id}`)
     .then((res) => {
       if (res.status === 200) {
         if (res.data.length > 0) {
@@ -80,6 +84,7 @@ const handleSave = async () => {
   for (const key in localMapping) {
     const [cloIndex, ploIndex] = key.split('-');
     const correlationData = {
+      upCourse : upCourses.id,
       clo: parseInt(cloIndex, 10),
       plo: parseInt(ploIndex, 10),
       correlation_level: parseInt(localMapping[key], 10),
@@ -123,8 +128,9 @@ const handleSave = async () => {
     <div className='Wrapper' id='clomapplo'>
         <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: (2019-2020) - (2023-2024)</p>
-            <p>Program: 3rd Year 1st Semester 2019-2020</p>
+            <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+            <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
+            <p>Course: {upCourses.code}</p>
           </div>
           <div className='col-4 Heading2'>
             <h2>Mapping of CLO and PLO</h2>
@@ -146,7 +152,7 @@ const handleSave = async () => {
                     <th>CLO Description</th>
                     {
                         plos.map((plo,index)=>(
-                            <th>M{index+1}</th>
+                            <th>PLO{index+1}</th>
                         ))
                     }
                 </tr>
@@ -195,7 +201,7 @@ const handleSave = async () => {
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? '/cloPloReasoning' : '#'}
+                to={(isComplete() && savedMapping) ? '/ilo' : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

@@ -4,11 +4,18 @@ import { SkillWrapper } from './SkillWrapper'
 import { AttitudeWrapper } from './AttitudeWrapper'
 import logo from './logos/JU_logo2.png';
 import {Link} from 'react-router-dom'
-import IloContext from './Context/IloContext';
+import DataContext from './Context/DataContext';
 
 export const IloWrapper = () => {
 
-  const {knowledges,skills,attitudes} = useContext(IloContext);
+  const [knowledges, setKnowledges] = useState([]);
+
+  const [skills, setSkills] = useState([]);
+
+  const [attitudes, setAttitudes] = useState([]);
+  const {upCurriculums} = useContext(DataContext);
+  const {upSyllabuses} = useContext(DataContext);
+  const {upCourses} = useContext(DataContext);
   
   const isComplete = () => {
     return (knowledges.length !== 0) && (skills.length !== 0) && (attitudes.length !== 0);
@@ -18,9 +25,9 @@ export const IloWrapper = () => {
     <div className='Wrapper' id='ilo'>
         <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: (2019-2020) - (2023-2024)</p>
-            <p>Program: 3rd Year 1st Semester 2019-2020</p>
-            <p>Course: CSE-356</p>
+            <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+            <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
+            <p>Course: {upCourses.code}</p>
           </div>
           <div className='col-4 Heading2'>
             <h2 >Intended Learning Outcomes (ILO)</h2>
@@ -29,13 +36,13 @@ export const IloWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
-          <KnowledgeWrapper/>
-          <SkillWrapper/>
-          <AttitudeWrapper/>
+          <KnowledgeWrapper knowledges={knowledges} setKnowledges={setKnowledges}/>
+          <SkillWrapper skills={skills} setSkills={setSkills}/>
+          <AttitudeWrapper attitudes={attitudes} setAttitudes={setAttitudes}/>
         
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/cloploreasoning'>
+              <Link to='/clomapplo'>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

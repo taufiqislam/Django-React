@@ -3,16 +3,15 @@ import { SkillForm } from './SkillForm'
 import {v4 as uuidv4} from 'uuid'
 import { Skill } from './Skill'
 import { EditSkillForm } from './EditSkillForm';
-import IloContext from './Context/IloContext';
+import DataContext from './Context/DataContext';
 import axios  from 'axios';
 uuidv4()
 
-export const SkillWrapper = () => {
-
-  const {skills, setSkills} = useContext(IloContext);
-
+export const SkillWrapper = (props) => {
+  const {skills, setSkills} = props;
+  const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/skill/")
+    axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${upCourses.id}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -29,8 +28,8 @@ export const SkillWrapper = () => {
   const addSkill = (description) => {
   
     const requestData = {
+      upCourse : upCourses.id,
       description:description,
-
       isEditing: false
     };
     
@@ -62,9 +61,8 @@ export const SkillWrapper = () => {
     }
     const editDescriptionSkill = (description,  id) => {
   const requestData = {
+    upCourse : upCourses.id,
     description: description,
-     // Include data for the knowledge_level column
-    // Add other properties for additional columns here
   };
 
   axios

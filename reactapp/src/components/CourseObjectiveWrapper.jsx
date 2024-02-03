@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect, useContext} from 'react'
 import { CourseObjectiveForm } from './CourseObjectiveForm'
 import {v4 as uuidv4} from 'uuid'
 import { CourseObjective } from './CourseObjective'
@@ -6,13 +6,17 @@ import { EditCourseObjectiveForm } from './EditCourseObjectiveForm';
 import logo from './logos/JU_logo2.png';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
+import DataContext from './Context/DataContext';
 uuidv4()
 
 export const CourseObjectiveWrapper = () => {
 
     const [courseObjectives, setCourseObjectives] = useState([])
+    const {upCurriculums} = useContext(DataContext);
+    const {upSyllabuses} = useContext(DataContext);
+    const {upCourses} = useContext(DataContext);
     useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/CO/")
+      axios.get(`http://127.0.0.1:8000/api/CO/?upCourse=${upCourses.id}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -29,8 +33,8 @@ export const CourseObjectiveWrapper = () => {
     const addCourseObjective = (description) => {
     
       const requestData = {
+        upCourse : upCourses.id,
         description:description,
-  
         isEditing: false
       };
       
@@ -62,9 +66,8 @@ export const CourseObjectiveWrapper = () => {
       }
       const editDescriptionCourseObjective = (description,  id) => {
     const requestData = {
+      upCourse : upCourses.id,
       description: description,
-       // Include data for the knowledge_level column
-      // Add other properties for additional columns here
     };
   
     axios
@@ -91,9 +94,9 @@ export const CourseObjectiveWrapper = () => {
     <div className='Wrapper' id='courseobjective'>
       <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: (2019-2020) - (2023-2024)</p>
-            <p>Program: 3rd Year 1st Semester 2019-2020</p>
-            <p>Course: CSE-356</p>
+          <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+          <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
+          <p>Course: {upCourses.code}</p>
           </div>
           <div className='col-4 Heading2'>
            <h2>Course Objectives(CO)</h2>
@@ -126,7 +129,7 @@ export const CourseObjectiveWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/courseinfo'>
+              <Link to='/course'>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

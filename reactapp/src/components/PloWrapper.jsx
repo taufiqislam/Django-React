@@ -3,18 +3,20 @@ import { PloForm } from './PloForm'
 import {v4 as uuidv4} from 'uuid'
 import { Plo } from './Plo'
 import { EditPloForm } from './EditPloForm';
-import PloContext from "./Context/PloContext";
 import logo from './logos/JU_logo2.png';
 import {Link} from 'react-router-dom';
 import { useEffect } from 'react';
+import DataContext from './Context/DataContext';
 import axios from 'axios';
 uuidv4()
 
 export const PloWrapper = () => {
 
     const [plos, setPlos] = useState([]);
+    const {upCurriculums} = useContext(DataContext);
+    const {upSyllabuses} = useContext(DataContext);
     useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/plo/")
+      axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${upSyllabuses.id}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -29,7 +31,7 @@ export const PloWrapper = () => {
         })
     }, [])
     const addPlo = plos => {
-      const requestData = { descriptionPLO: plos, isEditing: false};
+      const requestData = {upSyllabus: upSyllabuses.id, descriptionPLO: plos, isEditing: false};
     
       axios
         .post('http://127.0.0.1:8000/api/plo/', requestData)
@@ -64,7 +66,7 @@ export const PloWrapper = () => {
     };
     const editDescription = (descriptionPLO, id) => {
     
-    const requestData = { descriptionPLO: descriptionPLO };
+    const requestData = {upSyllabus: upSyllabuses.id, descriptionPLO: descriptionPLO };
 
     axios
       .put(`http://127.0.0.1:8000/api/plo/${id}/`, requestData)
@@ -76,13 +78,13 @@ export const PloWrapper = () => {
       .catch((err) => {
         console.log(err);      
       });
-}
+    }
   return (
     <div className='Wrapper' id='plo'>
         <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: (2019-2020) - (2023-2024)</p>
-            <p>Program: 3rd Year 1st Semester 2019-2020</p>
+            <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+            <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
           </div>
           <div className='col-4 Heading2'>
             <h2>Program Educational Outcomes (plo)</h2>

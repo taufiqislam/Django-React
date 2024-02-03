@@ -250,7 +250,14 @@ function Syllabus(props) {
                     </tbody>
                     </table>
                 </Row>
-                
+                <div className='row'>
+                    <div className='text-start'>
+                    <Link to='/curriculum'>
+                        <button type='submit' className='btn btn-warning'>Back</button>
+                    </Link>
+                    
+                    </div>
+                </div>
             </Container>
         </Fragment>
     );

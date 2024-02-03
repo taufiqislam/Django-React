@@ -54,11 +54,7 @@ function App() {
 
     const [clos, setClos] = useState([])
 
-    const [knowledges, setKnowledges] = useState([]);
-
-    const [skills, setSkills] = useState([]);
-
-    const [attitudes, setAttitudes] = useState([]);
+    
 
     const [upCurriculums, setUpCurriculums] = useState({});
     const [upSyllabuses, setUpSyllabuses] = useState({});
@@ -69,11 +65,6 @@ function App() {
 
     <BrowserRouter>
       <DataContext.Provider value={{upCurriculums, setUpCurriculums, upSyllabuses, setUpSyllabuses, upCourses, setUpCourses}}>
-      <MissionContext.Provider value={{missions, setMissions}}>
-        <PeoContext.Provider value={{peos, setPeos}}>
-         <PloContext.Provider value={{plos,setPlos}}>
-             <CloContext.Provider value={{clos,setClos}}>
-                <IloContext.Provider value={{knowledges, setKnowledges, skills, setSkills, attitudes, setAttitudes}}>
                  <Container>
                      <Row>
                         <Col md={2} sm={2} lg={2}>
@@ -117,11 +108,6 @@ function App() {
                         </Col>
                      </Row>
                  </Container>
-                </IloContext.Provider>
-             </CloContext.Provider>
-         </PloContext.Provider>
-        </PeoContext.Provider>
-        </MissionContext.Provider>
       </DataContext.Provider>
     </BrowserRouter>
   );

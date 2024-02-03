@@ -30,7 +30,7 @@ class BookSerial(serializers.ModelSerializer):
 class MappingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mapping
-        fields = ['peo', 'mission', 'correlation_level']        
+        fields = '__all__'     
         
 class AttitudeSerial(serializers.ModelSerializer):
     class Meta:
@@ -79,4 +79,9 @@ class SyllabusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Syllabus
         fields = '__all__'       
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'      
 

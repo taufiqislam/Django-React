@@ -19,33 +19,33 @@ class PLOAdmin(admin.ModelAdmin):
 admin.site.register(PLO,PLOAdmin)   
 
 class CLOAdmin(admin.ModelAdmin):
-    list_display = ["descriptionCLO","knowledge_level"]
+    list_display = ["upCourse","descriptionCLO","knowledge_level"]
 
 admin.site.register(CLO,CLOAdmin)   
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ["name","author","publisher","year","edition"]
+    list_display = ["upCourse","name","author","publisher","year","edition"]
 
 admin.site.register(Book_reference,BookAdmin)   
 @admin.register(Mapping)
 class MappingAdmin(admin.ModelAdmin):
-    list_display = ["peo", "mission", "correlation_level"]
+    list_display = ["upSyllabus","peo", "mission", "correlation_level"]
 
 class AttitudeAdmin(admin.ModelAdmin):
-    list_display = ["description"]
+    list_display = ["upCourse","description"]
 
 admin.site.register(Attitude,AttitudeAdmin ) 
 
 
 class SkillAdmin(admin.ModelAdmin):
-    list_display = ["description"]
+    list_display = ["upCourse","description"]
 
 admin.site.register(Skill,SkillAdmin )  
 
 
 class COAdmin(admin.ModelAdmin):
-    list_display = ["description"]
+    list_display = ["upCourse","description"]
 
 admin.site.register(CO,COAdmin )  
 class VisionAdmin(admin.ModelAdmin):
@@ -55,18 +55,18 @@ admin.site.register(Vision,VisionAdmin )
 
 
 class KnowledgeAdmin(admin.ModelAdmin):
-    list_display = ["description"]
+    list_display = ["upCourse","description"]
 
 admin.site.register(Knowledge,KnowledgeAdmin ) 
 
 
 @admin.register(PloMapPeo)
 class PloMapPeoAdmin(admin.ModelAdmin):
-    list_display = ["plo_id", "peo_id", "correlation_level"]
+    list_display = ["upSyllabus","plo_id", "peo_id", "correlation_level"]
 
 @admin.register(CloMapPlo)
 class CloMapPloAdmin(admin.ModelAdmin):
-    list_display = ["clo_id", "plo_id", "correlation_level"]
+    list_display = ["upCourse","clo_id", "plo_id", "correlation_level"]
 
 @admin.register(Curriculum)
 class CurriculumAdmin(admin.ModelAdmin):
@@ -75,3 +75,7 @@ class CurriculumAdmin(admin.ModelAdmin):
 @admin.register(Syllabus)
 class SyllabusAdmin(admin.ModelAdmin):
     list_display = ["upCurriculum", "program", "selectedOption", "yearValue", "semesterValue", "session"]
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ["upSyllabus","code", "title"]

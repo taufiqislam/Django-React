@@ -3,15 +3,16 @@ import { AttitudeForm } from './AttitudeForm'
 import {v4 as uuidv4} from 'uuid'
 import { Attitude } from './Attitude'
 import { EditAttitudeForm } from './EditAttitudeForm';
-import IloContext from './Context/IloContext';
 import axios from 'axios';
+import DataContext from './Context/DataContext';
 uuidv4()
 
-export const AttitudeWrapper = () => {
+export const AttitudeWrapper = (props) => {
 
-  const {attitudes, setAttitudes} = useContext(IloContext);
+  const {attitudes, setAttitudes} = props;
+  const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/attitude/")
+    axios.get(`http://127.0.0.1:8000/api/attitude/?upCourse=${upCourses.id}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -29,8 +30,8 @@ export const AttitudeWrapper = () => {
   const addAttitude = (description) => {
   
     const requestData = {
+      upCourse : upCourses.id,
       description:description,
-
       isEditing: false
     };
     
@@ -62,9 +63,8 @@ export const AttitudeWrapper = () => {
     }
     const editDescriptionAttitude = (description,  id) => {
   const requestData = {
+    upCourse : upCourses.id,
     description: description,
-     // Include data for the knowledge_level column
-    // Add other properties for additional columns here
   };
 
   axios

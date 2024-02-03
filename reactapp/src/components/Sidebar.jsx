@@ -141,13 +141,13 @@ export const Sidebar = () => {
                     </li>
                 )}
 
-                {showCloPloReasoning && (
+                {/* {showCloPloReasoning && (
                     <li className="nav-item">
                     <Link to='/cloPloReasoning' className="nav-link">
                         <span>CLO & PLO Reasoning</span>
                     </Link>
                     </li>
-                )}
+                )} */}
 
                 {showIlo && (
                     <li className="nav-item">

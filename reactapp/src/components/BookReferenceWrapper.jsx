@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react'
+import React, { useState,useEffect,useContext} from 'react'
 import { BookReferenceForm } from './BookReferenceForm'
 import {v4 as uuidv4} from 'uuid'
 import { EditBookReferenceForm } from './EditBookReferenceForm';
@@ -6,13 +6,17 @@ import logo from './logos/JU_logo2.png';
 import {Link} from 'react-router-dom'
 import {BookReference} from "./Bookreference";
 import axios from 'axios';
+import DataContext from './Context/DataContext';
 uuidv4()
 
 export const BookReferenceWrapper = () => {
 
-    const [bookReferences, setBookReferences] = useState([])
+    const [bookReferences, setBookReferences] = useState([]);
+    const {upCurriculums} = useContext(DataContext);
+    const {upSyllabuses} = useContext(DataContext);
+    const {upCourses} = useContext(DataContext);
     useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/book/")
+      axios.get(`http://127.0.0.1:8000/api/book/?upCourse=${upCourses.id}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -30,6 +34,7 @@ export const BookReferenceWrapper = () => {
     const addBookReference = (name,author,publisher,year,edition) => {
     
       const requestData = {
+        upCourse : upCourses.id,
         name: name,
         author: author,
         publisher:publisher,
@@ -66,13 +71,12 @@ export const BookReferenceWrapper = () => {
       }
       const editDescriptionBookReference = (name,author,publisher,year,edition, id) => {
     const requestData = {
+        upCourse : upCourses.id,
         name: name,
         author: author,
         publisher:publisher,
         year:year,
         edition:edition
-      // Include data for the knowledge_level column
-      // Add other properties for additional columns here
     };
   
     axios
@@ -101,9 +105,9 @@ export const BookReferenceWrapper = () => {
     <div className='Wrapper' id='bookreference'>
         <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: (2019-2020) - (2023-2024)</p>
-            <p>Program: 3rd Year 1st Semester 2019-2020</p>
-            <p>Course: CSE-356</p>
+            <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+            <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
+            <p>Course: {upCourses.code}</p>
           </div>
           <div className='col-4 Heading2'>
             <h2 >Reference Books</h2>
@@ -138,28 +142,9 @@ export const BookReferenceWrapper = () => {
           </tbody>
         </table>
         <div className='row'>
-            <div className='col-6 text-start'>
-              <Link to='/courseassessment'>
+            <div className='text-start'>
+              <Link to='/ilo'>
                 <button type='submit' className='btn btn-warning'>Back</button>
-              </Link>
-              
-            </div>
-            <div className='col-6 text-end'>
-              <Link
-                  to={isComplete() ? '/' : '#'}
-                  onClick={(e) => {
-                      if (!isComplete()) {
-                          e.preventDefault();
-                          alert("Please add at least one Reference Book.");
-                      }
-                  }}
-              >
-                  <button
-                      type='button'
-                      className={`form-btn btn ${isComplete() ? '' : 'disabled'}`}
-                  >
-                      Next
-                  </button>
               </Link>
               
             </div>

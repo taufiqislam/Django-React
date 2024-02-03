@@ -3,17 +3,15 @@ import { KnowledgeForm } from './KnowledgeForm'
 import {v4 as uuidv4} from 'uuid'
 import { Knowledge } from './Knowledge'
 import { EditKnowledgeForm } from './EditKnowledgeForm';
-import IloContext from './Context/IloContext';
+import DataContext from './Context/DataContext';
 import axios from 'axios';
 uuidv4()
 
-export const KnowledgeWrapper = () => {
-
-
-  const {knowledges, setKnowledges} = useContext(IloContext);
-
+export const KnowledgeWrapper = (props) => {
+  const { knowledges, setKnowledges } = props;
+  const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/knowledge/")
+    axios.get(`http://127.0.0.1:8000/api/knowledge/?upCourse=${upCourses.id}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -30,6 +28,7 @@ export const KnowledgeWrapper = () => {
   const addKnowledge = (description) => {
   
     const requestData = {
+      upCourse : upCourses.id,
       description:description,
 
       isEditing: false
@@ -63,9 +62,8 @@ export const KnowledgeWrapper = () => {
     }
     const editDescriptionKnowledge = (description,  id) => {
   const requestData = {
+    upCourse : upCourses.id,
     description: description,
-     // Include data for the knowledge_level column
-    // Add other properties for additional columns here
   };
 
   axios

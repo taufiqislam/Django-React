@@ -23,49 +23,90 @@ class PeoViewSet(viewsets.ModelViewSet):
 
 class PloViewSet(viewsets.ModelViewSet):
     serializer_class= PLOSerial
-    queryset=PLO.objects.all()        
+    def get_queryset(self):
+        up_syllabus_id = self.request.query_params.get('upSyllabus')
+
+        if up_syllabus_id:
+            return PLO.objects.filter(upSyllabus=up_syllabus_id)
+
+        return PLO.objects.all()       
 
 class CloViewSet(viewsets.ModelViewSet):
     serializer_class= CLOSerial
-    queryset=CLO.objects.all()   
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return CLO.objects.filter(upCourse=up_course_id)
+        return CLO.objects.all()  
 
 class BookViewSet(viewsets.ModelViewSet):
     serializer_class= BookSerial
     queryset=Book_reference.objects.all()     
    
 class MappingViewSet(viewsets.ModelViewSet):
-    queryset = Mapping.objects.all()
     serializer_class = MappingSerializer
+    def get_queryset(self):
+        up_syllabus_id = self.request.query_params.get('upSyllabus')
+
+        if up_syllabus_id:
+            return Mapping.objects.filter(upSyllabus=up_syllabus_id)
+
+        return Mapping.objects.all()
 
 class AttitudeViewSet(viewsets.ModelViewSet):
-    queryset = Attitude.objects.all()
     serializer_class = AttitudeSerial
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return Attitude.objects.filter(upCourse=up_course_id)
+        return Attitude.objects.all()    
 
 
 class SkillViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
-    serializer_class = SkillSerial    
+    serializer_class = SkillSerial
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return Skill.objects.filter(upCourse=up_course_id)
+        return Skill.objects.all()       
 
 class COViewSet(viewsets.ModelViewSet):
-    queryset = CO.objects.all()
     serializer_class = COSerial   
-
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return CO.objects.filter(upCourse=up_course_id)
+        return CO.objects.all()
 
 class VisionViewSet(viewsets.ModelViewSet):
     queryset = Vision.objects.all()
     serializer_class = VisionSerial      
 
 class KnowledgeViewSet(viewsets.ModelViewSet):
-    queryset = Knowledge.objects.all()
-    serializer_class = KnowledgeSerial           
+    serializer_class = KnowledgeSerial
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return Knowledge.objects.filter(upCourse=up_course_id)
+        return Knowledge.objects.all()               
 
 class PloMapPeoViewSet(viewsets.ModelViewSet):
-    queryset = PloMapPeo.objects.all()
     serializer_class = PloMapPeoSerializer
+    def get_queryset(self):
+        up_syllabus_id = self.request.query_params.get('upSyllabus')
+
+        if up_syllabus_id:
+            return PloMapPeo.objects.filter(upSyllabus=up_syllabus_id)
+
+        return PloMapPeo.objects.all()       
 
 class CloMapPloViewSet(viewsets.ModelViewSet):
-    queryset = CloMapPlo.objects.all()
-    serializer_class = CloMapPloSerializer    
+    serializer_class = CloMapPloSerializer
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return CloMapPlo.objects.filter(upCourse=up_course_id)
+        return CloMapPlo.objects.all()    
 
 class CurriculumViewSet(viewsets.ModelViewSet):
     queryset = Curriculum.objects.all()
@@ -79,4 +120,14 @@ class SyllabusViewSet(viewsets.ModelViewSet):
         if up_curriculum_id:
             return Syllabus.objects.filter(upCurriculum=up_curriculum_id)
         return Syllabus.objects.all()
+    
+class CourseViewSet(viewsets.ModelViewSet):
+    serializer_class = CourseSerializer
+    def get_queryset(self):
+        up_syllabus_id = self.request.query_params.get('upSyllabus')
+
+        if up_syllabus_id:
+            return Course.objects.filter(upSyllabus=up_syllabus_id)
+
+        return Course.objects.all()       
 

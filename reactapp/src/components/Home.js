@@ -9,7 +9,9 @@ function Home(props) {
                 <div className="overlay">
                     <div className="content">
                         <h4 className='title'>WELCOME TO OUR OBE-COURSE CURRICULUM SYSTEM</h4>
-                        <Button className='tabMission btn-secondary'>GO</Button>
+                        <Link to='/mission'>
+                            <Button className='tabMission btn-secondary'>GO</Button>
+                        </Link>
                     </div>
                 </div>
             </Container>

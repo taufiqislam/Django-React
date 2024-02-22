@@ -28,31 +28,36 @@ import { CourseAssessmentPage } from './pages/CourseAssessmentPage';
 import SyllabusPage from "./pages/SyllabusPage";
 import CloContext from "./components/Context/CloContext";
 import {Col, Container, Row} from "react-bootstrap";
-import {Sidebar} from "./components/Sidebar";
 import {OutlineTablePage} from "./pages/OutlineTablePage";
 import IloContext from './components/Context/IloContext';
 import MissionWrapper from './components/MissionWrapper';
 import DataContext from './components/Context/DataContext';
+import { Sidebar } from './components/Sidebar';
 
 
 function App() {
+    const [showHome, setShowHome] = useState(false);
+    const [showPrograms, setShowPrograms] = useState(false);
+    const [showCourses, setShowCourses] = useState(false);
 
-    // PEOS FUNCTIONAL WORK HERE //
-    const [peos, setPeos] = useState([])
-    
-
-    // MISSIONS WORK HERE//
-    const [missions, setMissions] = useState([])
-    
-
-
-    // PLOS WORK HERE //
-    const [plos, setPlos] = useState([])
-    
-
-    // CLOs work here
-
-    const [clos, setClos] = useState([])
+    const [showMission, setShowMission] = useState(false);
+    const [showVision, setShowVision] = useState(true);
+    const [showCurriculum, setShowCurriculum] = useState(true);
+    const [showProgram, setShowProgram] = useState(true);
+    const [showPeo, setShowPeo] = useState(true);
+    const [showPeoMapMission, setShowPeoMapMission] = useState(true);
+    const [showPlo, setShowPlo] = useState(true);
+    const [showPloMapPeo, setShowPloMapPeo] = useState(true);
+    const [showCourse, setShowCourse] = useState(true);
+    const [showCourseInfo, setShowCourseInfo] = useState(true);
+    const [showCourseObjective, setShowCourseObjective] = useState(true);
+    const [showClo, setShowClo] = useState(true);
+    const [showCloMapPlo, setShowCloMapPlo] = useState(true);
+    const [showCloPloReasoning, setShowCloPloReasoning] = useState(true);
+    const [showIlo, setShowIlo] = useState(true);
+    const [showCourseContentOutline, setShowCourseContentOutline] = useState(true);
+    const [showCourseAssessment, setShowCourseAssessment] = useState(true);
+    const [showBookReference, setShowBookReference] = useState(true);
 
     
 
@@ -64,7 +69,31 @@ function App() {
   return (
 
     <BrowserRouter>
-      <DataContext.Provider value={{upCurriculums, setUpCurriculums, upSyllabuses, setUpSyllabuses, upCourses, setUpCourses}}>
+      <DataContext.Provider value={{upCurriculums, setUpCurriculums, 
+                                    upSyllabuses, setUpSyllabuses, 
+                                    upCourses, setUpCourses,
+                                    showHome, setShowHome,
+                                    showPrograms, setShowPrograms,
+                                    showCourses, setShowCourses,
+                                    showMission, setShowMission,
+                                    showVision, setShowVision,
+                                    showCurriculum, setShowCurriculum,
+                                    showProgram, setShowProgram,
+                                    showPeo, setShowPeo,
+                                    showPeoMapMission, setShowPeoMapMission,
+                                    showPlo, setShowPlo,
+                                    showPloMapPeo, setShowPloMapPeo,
+                                    showCourse, setShowCourse,
+                                    showCourseInfo, setShowCourseInfo,
+                                    showCourseObjective, setShowCourseObjective,
+                                    showClo, setShowClo,
+                                    showCloMapPlo, setShowCloMapPlo,
+                                    showCloPloReasoning, setShowCloPloReasoning,
+                                    showIlo, setShowIlo,
+                                    showCourseContentOutline, setShowCourseContentOutline,
+                                    showCourseAssessment, setShowCourseAssessment,
+                                    showBookReference, setShowBookReference
+                                    }}>
                  <Container>
                      <Row>
                         <Col md={2} sm={2} lg={2}>

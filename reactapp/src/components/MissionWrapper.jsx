@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { MissionForm } from './MissionForm'
 import { Mission } from './Mission'
 import { EditMissionForm } from './EditMissionForm';
@@ -7,8 +7,9 @@ import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { useState,useEffect } from 'react';
 import async  from "react-async"
+import DataContext from './Context/DataContext';
 export const  MissionWrapper =  ()=> {
-
+  const {setShowMission} = useContext(DataContext)
   const [missions, setMissions] = useState([]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/mission/")
@@ -62,7 +63,12 @@ const editDescriptionMission = (description, id) => {
       });
 }
 const isComplete = () => {
-  return missions.length !== 0;
+  if(missions.length !== 0)
+  {
+    setShowMission(true);
+    return 1;
+  }
+  return 0;
 };
     
   return (

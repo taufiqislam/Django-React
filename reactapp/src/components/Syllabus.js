@@ -12,7 +12,9 @@ import DataContext from './Context/DataContext';
 import axios from 'axios';
 
 function Syllabus(props) {
-
+    
+    const {setShowSyllabuses} = useContext(DataContext);
+    const {setShowPrograms} = useContext(DataContext);
     const {upCurriculums,setUpCurriculums} = useContext(DataContext);
     const {upSyllabuses,setUpSyllabuses} = useContext(DataContext);
     const [syllabuses, setSyllabuses] = useState([]);
@@ -96,6 +98,11 @@ function Syllabus(props) {
         setSession(e.target.value);
     }
 
+    const handleClick = (syllabus) => {
+        setUpSyllabuses(syllabus);
+        setShowPrograms(true);
+        setShowSyllabuses(false);
+    };
     return (
         <Fragment>
             <Container className="Wrapper">
@@ -215,27 +222,27 @@ function Syllabus(props) {
                         {syllabuses.map((syllabus, index) => (
                                 <tr key={index} className='nav-item'>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => setUpSyllabuses(syllabus)}>
+                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
                                             <span>{syllabus.program}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => setUpSyllabuses(syllabus)}>
+                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
                                             <span>{syllabus.selectedOption}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => setUpSyllabuses(syllabus)}>
+                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
                                             <span>{syllabus.session}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => setUpSyllabuses(syllabus)}>
+                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
                                             <span>{syllabus.yearValue}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => setUpSyllabuses(syllabus)}>
+                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
                                             <span>{syllabus.semesterValue}</span>
                                         </Link>
                                     </td>

@@ -32,13 +32,14 @@ import {OutlineTablePage} from "./pages/OutlineTablePage";
 import IloContext from './components/Context/IloContext';
 import MissionWrapper from './components/MissionWrapper';
 import DataContext from './components/Context/DataContext';
-import { Sidebar } from './components/Sidebar';
+import { Sidebar } from './components/Sidebar1';
 
 
 function App() {
     const [showHome, setShowHome] = useState(false);
     const [showPrograms, setShowPrograms] = useState(false);
     const [showCourses, setShowCourses] = useState(false);
+    const [showSyllabuses, setShowSyllabuses] = useState(false);
 
     const [showMission, setShowMission] = useState(false);
     const [showVision, setShowVision] = useState(true);
@@ -73,6 +74,7 @@ function App() {
                                     upSyllabuses, setUpSyllabuses, 
                                     upCourses, setUpCourses,
                                     showHome, setShowHome,
+                                    showSyllabuses, setShowSyllabuses,
                                     showPrograms, setShowPrograms,
                                     showCourses, setShowCourses,
                                     showMission, setShowMission,

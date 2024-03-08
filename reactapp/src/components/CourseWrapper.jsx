@@ -12,6 +12,8 @@ import axios from 'axios';
 uuidv4()
 
 export const CourseWrapper = () => {
+    const {setShowPrograms} = useContext(DataContext);
+    const {setShowCourses} = useContext(DataContext);
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     const {upCourses,setUpCourses} = useContext(DataContext);
@@ -81,9 +83,15 @@ export const CourseWrapper = () => {
           });
     }
 
-    const isComplete = () => {
+  const isComplete = () => {
       return courses.length !== 0;
-    };
+  };
+
+  const handleClick = (course) => {
+    setUpCourses(course);
+    setShowPrograms(false);
+    setShowCourses(true);
+  };
     
   return (
     <div className='Wrapper' id='course'>
@@ -117,12 +125,12 @@ export const CourseWrapper = () => {
               ) : (
                 <tr className='nav-item'>
                     <td>
-                        <Link to='/courseinfo' className='nav-link' onClick={() => setUpCourses(course)}>
+                        <Link to='/courseinfo' className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.code}</span>
                         </Link>
                     </td>
                     <td>
-                        <Link to='/courseinfo' className='nav-link' onClick={() => setUpCourses(course)}>
+                        <Link to='/courseinfo' className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.title}</span>
                         </Link>
                     </td>

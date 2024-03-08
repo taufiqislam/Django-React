@@ -5,6 +5,7 @@ import DataContext from './Context/DataContext';
 
 export const Sidebar = () => {
     const {showHome, setShowHome} = useContext(DataContext);
+    const {showSyllabuses, setShowSyllabuses} = useContext(DataContext);
     const {showPrograms, setShowPrograms} = useContext(DataContext);
     const {showCourses, setShowCourses} = useContext(DataContext);
 
@@ -72,7 +73,7 @@ export const Sidebar = () => {
            <hr/>
            <ul className="" id="menu">
                 <li className="nav-item">
-                <Link to="/" className="nav-link" onClick={toggleHome}>
+                <Link to="/" className="nav-link">
                     <span>Home</span>
                 </Link>
                 </li>
@@ -90,7 +91,7 @@ export const Sidebar = () => {
                     </Link>
                     </li>
                 )}
-                {showCurriculum && (
+                {showHome && showCurriculum && (
                     <li className="nav-item">
                     <Link to='/curriculum' class="nav-link">
                         <span>Curriculum</span>
@@ -98,9 +99,9 @@ export const Sidebar = () => {
                     </li>
                 )}
                 
-                {showProgram && (
+                {showSyllabuses && showProgram && (
                     <li className="nav-item">
-                    <Link to='/syllabus' className="nav-link" onClick={toggleProgram}>
+                    <Link to='/syllabus' className="nav-link">
                         <span>Program</span>
                     </Link>
                     </li>
@@ -136,9 +137,9 @@ export const Sidebar = () => {
                     </Link>
                     </li>
                 )}
-                {showCourse && (
+                {showPrograms && showCourse && (
                     <li className="nav-item">
-                    <Link to='/course' className="nav-link" onClick={toggleCourse}>
+                    <Link to='/course' className="nav-link">
                         <span>Courses</span>
                     </Link>
                     </li>
@@ -193,13 +194,13 @@ export const Sidebar = () => {
                     </li>
                 )}
 
-                {showCourses && showCourseContentOutline && (
+                {/* {showCourses && showCourseContentOutline && (
                     <li className="nav-item">
                     <Link to='/outline' className="nav-link">
                         <span>Course Content Outline</span>
                     </Link>
                     </li>
-                )}
+                )} */}
                 {showCourses && showCourseAssessment && (
                     <li className="nav-item">
                     <Link to='/courseassessment' className="nav-link">

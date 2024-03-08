@@ -8,6 +8,8 @@ import DataContext from './Context/DataContext';
 import axios from 'axios';
 
 export default function Curriculum() {
+    const {setShowHome} = useContext(DataContext);
+    const {setShowSyllabuses} = useContext(DataContext);
     const {upCurriculums,setUpCurriculums} = useContext(DataContext)
     const [curriculums,setCurriculums]=useState([])
     const [inputdata,setInputdata]=useState({starting:"",ending:""})
@@ -82,6 +84,15 @@ export default function Curriculum() {
         setBolin(false)
         setInputdata({starting:"",ending:""})
     }
+
+    const handleClick = (item) => {
+        setUpCurriculums(item);
+        setShowHome(false);
+        setShowSyllabuses(true);
+    };
+
+    
+
     return (
         <div className='container Wrapper'>
             <div className='row'>
@@ -146,13 +157,13 @@ export default function Curriculum() {
                             return(
                                 <tr key={i} className='nav-item'>
                                     <td>
-                                        <Link to='/syllabus' className='nav-link' onClick={() => setUpCurriculums(item)}>
+                                        <Link to='/syllabus' className='nav-link' onClick={() => handleClick(item)}>
                                             <span>{item.starting}</span>
                                         </Link>
                                         
                                     </td>
                                     <td>
-                                        <Link to='/syllabus' className='nav-link' onClick={() => setUpCurriculums(item)}>
+                                        <Link to='/syllabus' className='nav-link' onClick={() => handleClick(item)}>
                                             <span>{item.ending}</span>
                                         </Link>
                                     </td>

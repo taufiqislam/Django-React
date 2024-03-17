@@ -32,7 +32,7 @@ import {OutlineTablePage} from "./pages/OutlineTablePage";
 import IloContext from './components/Context/IloContext';
 import MissionWrapper from './components/MissionWrapper';
 import DataContext from './components/Context/DataContext';
-import { Sidebar } from './components/Sidebar1';
+import { Sidebar } from './components/Sidebar';
 
 
 function App() {

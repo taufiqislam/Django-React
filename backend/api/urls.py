@@ -1,5 +1,6 @@
 from rest_framework import routers
 from .views import *
+from django.urls import path
 
 router = routers.DefaultRouter()
 router.register(r'api/mission', MissionViewSet, 'mission')
@@ -20,4 +21,12 @@ router.register(r'api/syllabus', SyllabusViewSet, basename='syllabus')
 router.register(r'api/course', CourseViewSet, basename='course')
 router.register(r'api/assess', AssessViewSet, basename='assess')
 router.register(r'api/courseinfo', CourseInfoViewSet, basename='courseinfo')
-urlpatterns = router.urls
+router.register(r'api/outline', OutlineViewSet, basename='outline')
+urlpatterns = [
+    *router.urls,
+    path('api/outline/<int:outline_id>/clos/', add_clos_to_outline, name='add-clos-to-outline'),
+    path('api/outline/<int:outline_id>/skills/', add_skill_to_outline, name='add_skill_to_outline'),
+    path('api/outline/<int:outline_id>/knows/', add_know_to_outline, name='add_know_to_outline'),
+    path('api/outline/<int:outline_id>/atts/', add_att_to_outline, name='add_att_to_outline'),
+
+]

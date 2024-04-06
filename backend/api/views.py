@@ -2,6 +2,9 @@ from django.shortcuts import render
 from rest_framework import viewsets ,generics
 from .models import *
 from .serializers import *
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
 class MissionViewSet(viewsets.ModelViewSet):
     serializer_class = MissionSerial
@@ -145,5 +148,55 @@ class CourseInfoViewSet(viewsets.ModelViewSet):
         up_course_id = self.request.query_params.get('upCourse')
         if up_course_id:
             return CourseInfo.objects.filter(upCourse=up_course_id)
-        return CourseInfo.objects.all()  
+        return CourseInfo.objects.all()
+
+class OutlineViewSet(viewsets.ModelViewSet):
+    serializer_class = OutlineSerializer   
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return Outline.objects.filter(upCourse=up_course_id)
+        return Outline.objects.all()
+    
+    
+@api_view(['POST'])
+def add_clos_to_outline(request, outline_id):
+    outline = get_object_or_404(Outline, pk=outline_id)
+    # Assuming the CLO ids are sent in the request body as a list
+    selected_clos = request.data.get('clos', [])
+    outline.clos.add(*selected_clos)
+    outline.save()
+    serializer = OutlineSerializer(outline)
+    return Response(serializer.data)    
+
+@api_view(['POST'])
+def add_skill_to_outline(request, outline_id):
+    outline = get_object_or_404(Outline, pk=outline_id)
+    # Assuming the CLO ids are sent in the request body as a list
+    selected_skill = request.data.get('skills', [])
+    outline.skills.add(*selected_skill)
+    outline.save()
+    serializer = OutlineSerializer(outline)
+    return Response(serializer.data)    
+
+@api_view(['POST'])
+def add_know_to_outline(request, outline_id):
+    outline = get_object_or_404(Outline, pk=outline_id)
+    # Assuming the knowledge ids are sent in the request body as a list
+    selected_know = request.data.get('knows', [])
+    outline.knows.add(*selected_know)
+    outline.save()
+    serializer = OutlineSerializer(outline)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def add_att_to_outline(request, outline_id):
+    outline = get_object_or_404(Outline, pk=outline_id)
+    # Assuming the CLO ids are sent in the request body as a list
+    selected_att = request.data.get('atts', [])
+    outline.atts.add(*selected_att)
+    outline.save()
+    serializer = OutlineSerializer(outline)
+    return Response(serializer.data)    
 

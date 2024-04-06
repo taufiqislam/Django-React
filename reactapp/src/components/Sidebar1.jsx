@@ -39,10 +39,23 @@ export const Sidebar = () => {
         }
     }
 
+    const toggleSyllabus = () => {
+        if(showSyllabuses)
+        {
+            setShowSyllabuses(false);
+            setShowHome(true);
+        }
+        else
+        {
+            setShowSyllabuses(true);
+        }
+    }
+
     const toggleProgram = () => {
         if(showPrograms)
         {
             setShowPrograms(false);
+            setShowSyllabuses(true);
         }
         else
         {
@@ -54,6 +67,7 @@ export const Sidebar = () => {
         if(showCourses)
         {
             setShowCourses(false);
+            setShowPrograms(true);
         }
         else
         {
@@ -98,11 +112,27 @@ export const Sidebar = () => {
                     </Link>
                     </li>
                 )}
+
+                {showHome && (
+                    <li className="nav-item">
+                    <Link to='/' class="nav-link">
+                        <button className='btn btn-warning' onClick={toggleHome}>Back</button>
+                    </Link>
+                    </li>
+                )}
                 
                 {showSyllabuses && showProgram && (
                     <li className="nav-item">
                     <Link to='/syllabus' className="nav-link">
                         <span>Program</span>
+                    </Link>
+                    </li>
+                )}
+
+                {showSyllabuses && (
+                    <li className="nav-item">
+                    <Link to='/mission' class="nav-link">
+                        <button className='btn btn-warning' onClick={toggleSyllabus}>Back</button>
                     </Link>
                     </li>
                 )}
@@ -141,6 +171,14 @@ export const Sidebar = () => {
                     <li className="nav-item">
                     <Link to='/course' className="nav-link">
                         <span>Courses</span>
+                    </Link>
+                    </li>
+                )}
+
+                {showPrograms && (
+                    <li className="nav-item">
+                    <Link to='/syllabus' class="nav-link">
+                        <button className='btn btn-warning' onClick={toggleProgram}>Back</button>
                     </Link>
                     </li>
                 )}
@@ -194,13 +232,13 @@ export const Sidebar = () => {
                     </li>
                 )}
 
-                {/* {showCourses && showCourseContentOutline && (
+                {showCourses && showCourseContentOutline && (
                     <li className="nav-item">
                     <Link to='/outline' className="nav-link">
                         <span>Course Content Outline</span>
                     </Link>
                     </li>
-                )} */}
+                )}
                 {showCourses && showCourseAssessment && (
                     <li className="nav-item">
                     <Link to='/courseassessment' className="nav-link">
@@ -216,6 +254,14 @@ export const Sidebar = () => {
                     </Link>
                     </li>
                 )}  
+                
+                {showCourses && (
+                    <li className="nav-item">
+                    <Link to='/peo' class="nav-link">
+                        <button className='btn btn-warning' onClick={toggleCourse}>Back</button>
+                    </Link>
+                    </li>
+                )}
 
            </ul>
            <Button className="btn btn-danger logout">Logout</Button>

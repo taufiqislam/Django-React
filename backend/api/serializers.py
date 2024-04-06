@@ -93,5 +93,10 @@ class AssessmentSerializer(serializers.ModelSerializer):
 class CourseInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseInfo
+        fields = '__all__'
+
+class OutlineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Outline
         fields = '__all__'   
 

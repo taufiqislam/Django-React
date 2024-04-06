@@ -172,4 +172,23 @@ class Assessment(models.Model):
     c_exper= models.IntegerField()
     c_final= models.IntegerField()
 
+class Outline(models.Model):
+    upCourse=models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    heading=models.CharField(max_length=20)    
+    description=models.CharField(max_length=20)
+    nonfaceToface=models.IntegerField()
+    lecture=models.IntegerField()
+    exercise=models.IntegerField()
+    practical=models.IntegerField()
+    others=models.IntegerField()
+    ilearn=models.IntegerField()
+    totalSlt=models.IntegerField()
+    clos = models.ManyToManyField(CLO,default=[] )
+    skills=models.ManyToManyField(Skill,default=[])
+    knows=models.ManyToManyField(Knowledge,default=[])
+    atts=models.ManyToManyField(Attitude,default=[])
+
+    def __str__(self):
+        return self.heading
+
 

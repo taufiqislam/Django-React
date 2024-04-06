@@ -79,3 +79,7 @@ class SyllabusAdmin(admin.ModelAdmin):
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ["upSyllabus","code", "title"]
+
+@admin.register(Outline)
+class OutlineAdmin(admin.ModelAdmin):
+    list_display=['heading','description','nonfaceToface','lecture','exercise','practical','others','ilearn','totalSlt']

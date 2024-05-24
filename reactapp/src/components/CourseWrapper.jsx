@@ -6,23 +6,22 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {v4 as uuidv4} from 'uuid'
 import { EditCourseForm } from './EditCourseForm';
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import DataContext from './Context/DataContext';
 import axios from 'axios';
 uuidv4()
 
 export const CourseWrapper = () => {
-    const {setShowPrograms} = useContext(DataContext);
-    const {setShowCourses} = useContext(DataContext);
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
+    const { curriculumId, syllabusId } = useParams();
     const {upCourses,setUpCourses} = useContext(DataContext);
     const [courses, setCourses] = useState([])
 
     useEffect(() => {
-        if (upSyllabuses.id) {
+        if (syllabusId) {
             console.log(upSyllabuses);
-            axios.get(`http://127.0.0.1:8000/api/course/?upSyllabus=${upSyllabuses.id}`)
+            axios.get(`http://127.0.0.1:8000/api/course/?upSyllabus=${syllabusId}`)
                 .then((res) => {
                     if (res.status === 200) {
                         if (res.data.length > 0) {
@@ -36,10 +35,10 @@ export const CourseWrapper = () => {
                     console.error("Something went wrong");
                 });
         }
-    }, [upSyllabuses.id]);
+    }, [syllabusId]);
     
     const addCourse = (code, title) => {
-    const requestData = {upSyllabus: upSyllabuses.id, code: code, title: title, isEditing: false};
+    const requestData = {upSyllabus: syllabusId, code: code, title: title, isEditing: false};
     
     axios
         .post('http://127.0.0.1:8000/api/course/', requestData)
@@ -69,7 +68,7 @@ export const CourseWrapper = () => {
     }
     const editDescriptionCourse = (code, title, id) => {
     
-        const requestData = {upSyllabus: upSyllabuses.id, code: code, title: title};
+        const requestData = {upSyllabus: syllabusId, code: code, title: title};
     
         axios
           .put(`http://127.0.0.1:8000/api/course/${id}/`, requestData)
@@ -89,8 +88,6 @@ export const CourseWrapper = () => {
 
   const handleClick = (course) => {
     setUpCourses(course);
-    setShowPrograms(false);
-    setShowCourses(true);
   };
     
   return (
@@ -125,12 +122,12 @@ export const CourseWrapper = () => {
               ) : (
                 <tr className='nav-item'>
                     <td>
-                        <Link to='/courseinfo' className='nav-link' onClick={() => handleClick(course)}>
+                        <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.code}</span>
                         </Link>
                     </td>
                     <td>
-                        <Link to='/courseinfo' className='nav-link' onClick={() => handleClick(course)}>
+                        <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.title}</span>
                         </Link>
                     </td>
@@ -147,7 +144,7 @@ export const CourseWrapper = () => {
         
         <div className='row'>
             <div className='text-start'>
-              <Link to='/plomappeo'>
+              <Link to={`/plomappeo/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

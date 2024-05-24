@@ -98,5 +98,10 @@ class CourseInfoSerializer(serializers.ModelSerializer):
 class OutlineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Outline
+        fields = '__all__'
+
+class Outserial(serializers.ModelSerializer):
+    class Meta:
+        model = OutlineLast
         fields = '__all__'   
 

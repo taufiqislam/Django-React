@@ -1,79 +1,52 @@
-import React, {Fragment, useContext, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, {Fragment, useContext, useState,useEffect} from 'react'
+import {Link,useLocation,useParams} from 'react-router-dom'
 import {Button} from "react-bootstrap";
 import DataContext from './Context/DataContext';
 
 export const Sidebar = () => {
-    const {showHome, setShowHome} = useContext(DataContext);
-    const {showSyllabuses, setShowSyllabuses} = useContext(DataContext);
-    const {showPrograms, setShowPrograms} = useContext(DataContext);
-    const {showCourses, setShowCourses} = useContext(DataContext);
+    const location = useLocation();
+    const { pathname } = location;
+    const [curriculumId, setCurriculumId] = useState(true);
+    const [syllabusId, setSyllabusId] = useState(true);
+    const [courseId, setCourseId] = useState(true);
+    const [showHome, setShowHome] = useState(true);
+    const [showSyllabuses, setShowSyllabuses] = useState(true);
+    const [showPrograms, setShowPrograms] = useState(true);
+    const [showCourses, setShowCourses] = useState(true);
 
-    const {showMission, setShowMission} = useContext(DataContext);
-    const {showVision, setShowVision} = useContext(DataContext);
-    const {showCurriculum, setShowCurriculum} = useContext(DataContext);
-    const {showProgram, setShowProgram} = useContext(DataContext);
-    const {showPeo, setShowPeo} = useContext(DataContext);
-    const {showPeoMapMission, setShowPeoMapMission} = useContext(DataContext);
-    const {showPlo, setShowPlo} = useContext(DataContext);
-    const {showPloMapPeo, setShowPloMapPeo} = useContext(DataContext);
-    const {showCourse, setShowCourse} = useContext(DataContext);
-    const {showCourseInfo, setShowCourseInfo} = useContext(DataContext);
-    const {showCourseObjective, setShowCourseObjective} = useContext(DataContext);
-    const {showClo, setShowClo} = useContext(DataContext);
-    const {showCloMapPlo, setShowCloMapPlo} = useContext(DataContext);
-    const {showCloPloReasoning, setShowCloPloReasoning} = useContext(DataContext);
-    const {showIlo, setShowIlo} = useContext(DataContext);
-    const {showCourseContentOutline, setShowCourseContentOutline} = useContext(DataContext);
-    const {showCourseAssessment, setShowCourseAssessment} = useContext(DataContext);
-    const {showBookReference, setShowBookReference} = useContext(DataContext);
 
-    const toggleHome = () => {
-        if(showHome)
-        {
-            setShowHome(false);
-        }
-        else
-        {
+    useEffect(() => {
+        const pathParts = pathname.split('/').filter(Boolean);
+
+        if (pathParts.length <= 1) {
             setShowHome(true);
-        }
-    }
-
-    const toggleSyllabus = () => {
-        if(showSyllabuses)
-        {
             setShowSyllabuses(false);
-            setShowHome(true);
-        }
-        else
-        {
-            setShowSyllabuses(true);
-        }
-    }
-
-    const toggleProgram = () => {
-        if(showPrograms)
-        {
             setShowPrograms(false);
-            setShowSyllabuses(true);
-        }
-        else
-        {
-            setShowPrograms(true);
-        }
-    }
-
-    const toggleCourse= () => {
-        if(showCourses)
-        {
             setShowCourses(false);
+        } else if (pathParts.length === 2) {
+            setCurriculumId(parseInt(pathParts[1],10));
+            setShowHome(false);
+            setShowSyllabuses(true);
+            setShowPrograms(false);
+            setShowCourses(false);
+        } else if (pathParts.length === 3) {
+            setCurriculumId(parseInt(pathParts[1],10));
+            setSyllabusId(parseInt(pathParts[2],10));
+            setShowHome(false);
+            setShowSyllabuses(false);
             setShowPrograms(true);
-        }
-        else
-        {
+            setShowCourses(false);
+        } else if (pathParts.length === 4) {
+            setCurriculumId(parseInt(pathParts[1],10));
+            setSyllabusId(parseInt(pathParts[2],10));
+            setCourseId(parseInt(pathParts[3],10));
+            setShowHome(false);
+            setShowSyllabuses(false);
+            setShowPrograms(false);
             setShowCourses(true);
         }
-    }
+    }, [pathname]);
+    
     
   return (
    <Fragment>
@@ -91,39 +64,31 @@ export const Sidebar = () => {
                     <span>Home</span>
                 </Link>
                 </li>
-                {showHome && showMission && (
+                {showHome &&  (
                     <li className="nav-item">
                     <Link to='/mission' className="nav-link" >
                         <span>Mission</span>
                     </Link>
                     </li>
                 )}
-                {showHome && showVision && (
+                {showHome && (
                     <li className="nav-item">
                     <Link to='/vision' className="nav-link">
                         <span>Vision</span>
                     </Link>
                     </li>
                 )}
-                {showHome && showCurriculum && (
+                {showHome && (
                     <li className="nav-item">
                     <Link to='/curriculum' class="nav-link">
                         <span>Curriculum</span>
                     </Link>
                     </li>
                 )}
-
-                {showHome && (
-                    <li className="nav-item">
-                    <Link to='/' class="nav-link">
-                        <button className='btn btn-warning' onClick={toggleHome}>Back</button>
-                    </Link>
-                    </li>
-                )}
                 
-                {showSyllabuses && showProgram && (
+                {showSyllabuses && (
                     <li className="nav-item">
-                    <Link to='/syllabus' className="nav-link">
+                    <Link to={`/syllabus/${curriculumId}`} className="nav-link">
                         <span>Program</span>
                     </Link>
                     </li>
@@ -131,45 +96,45 @@ export const Sidebar = () => {
 
                 {showSyllabuses && (
                     <li className="nav-item">
-                    <Link to='/mission' class="nav-link">
-                        <button className='btn btn-warning' onClick={toggleSyllabus}>Back</button>
+                    <Link to='/curriculum' class="nav-link">
+                        <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>
                 )}
                 
 
-                {showPrograms && showPeo && (
+                {showPrograms && (
                     <li className="nav-item">
-                    <Link to='/peo' className="nav-link">
+                    <Link to={`/peo/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Program Educational Objectives (PEO)</span>
                     </Link>
                     </li>
                 )}
-                {showPrograms && showPeoMapMission && (
+                {showPrograms && (
                      <li className="nav-item">
-                     <Link to='/peomapmission' className="nav-link">
+                     <Link to={`/peomapmission/${curriculumId}/${syllabusId}`} className="nav-link">
                          <span>Mapping Of PEO and Mission</span>
                      </Link>
                     </li>
                 )}
-                {showPrograms && showPlo && (
+                {showPrograms && (
                     <li className="nav-item">
-                    <Link to='/plo' className="nav-link">
+                    <Link to={`/plo/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Program Learning Outcomes (PLO)</span>
                     </Link>
                     </li>
                 )}
 
-                {showPrograms && showPloMapPeo && (
+                {showPrograms && (
                     <li className="nav-item">
-                    <Link to='/plomappeo' className="nav-link">
+                    <Link to={`/plomappeo/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Mapping Of PLO and PEO</span>
                     </Link>
                     </li>
                 )}
-                {showPrograms && showCourse && (
+                {showPrograms && (
                     <li className="nav-item">
-                    <Link to='/course' className="nav-link">
+                    <Link to={`/course/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Courses</span>
                     </Link>
                     </li>
@@ -177,40 +142,40 @@ export const Sidebar = () => {
 
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to='/syllabus' class="nav-link">
-                        <button className='btn btn-warning' onClick={toggleProgram}>Back</button>
+                    <Link to={`/syllabus/${curriculumId}`} class="nav-link">
+                        <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>
                 )}
                 
 
-                {showCourses && showCourseInfo && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/courseinfo' className="nav-link">
+                    <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Information</span>
                     </Link>
                     </li>
                 )}
 
-                {showCourses && showCourseObjective && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/courseobjective' className="nav-link">
+                    <Link to={`/courseobjective/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Objectives</span>
                     </Link>
                     </li>
                 )}
 
-                {showCourses && showClo && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/clo' className="nav-link">
+                    <Link to={`/clo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Learning Outcomes (CLO)</span>
                     </Link>
                     </li>
                 )}
 
-                {showCourses && showCloMapPlo && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/clomapplo' className="nav-link">
+                    <Link to={`/clomapplo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                        <span>CLO-PLO Correlation Matrix</span>
                     </Link>
                     </li>
@@ -224,32 +189,33 @@ export const Sidebar = () => {
                     </li>
                 )} */}
 
-                {showCourses && showIlo && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/ilo' className="nav-link">
+                    <Link to={`/ilo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Intended Learning Outcomes (ILO)</span>
                     </Link>
                     </li>
                 )}
 
-                {showCourses && showCourseContentOutline && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/outline' className="nav-link">
+                    <Link to={`/outline/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Content Outline</span>
                     </Link>
                     </li>
                 )}
-                {showCourses && showCourseAssessment && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/courseassessment' className="nav-link">
+                    <Link to={`/courseassessment/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Assessment</span>
                     </Link>
                     </li>
                 )}
+
                 
-                {showCourses && showBookReference && (
+                {showCourses && (
                     <li className="nav-item">
-                    <Link to='/bookreference' className="nav-link">
+                    <Link to={`/bookreference/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Reference Books</span>
                     </Link>
                     </li>
@@ -257,8 +223,8 @@ export const Sidebar = () => {
                 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to='/peo' class="nav-link">
-                        <button className='btn btn-warning' onClick={toggleCourse}>Back</button>
+                    <Link to={`/course/${curriculumId}/${syllabusId}`} class="nav-link">
+                        <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>
                 )}

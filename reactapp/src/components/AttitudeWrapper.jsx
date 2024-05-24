@@ -3,16 +3,18 @@ import { AttitudeForm } from './AttitudeForm'
 import {v4 as uuidv4} from 'uuid'
 import { Attitude } from './Attitude'
 import { EditAttitudeForm } from './EditAttitudeForm';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 uuidv4()
 
 export const AttitudeWrapper = (props) => {
 
+  const { curriculumId, syllabusId, courseId } = useParams();
   const {attitudes, setAttitudes} = props;
   const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/attitude/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/attitude/?upCourse=${courseId}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -30,7 +32,7 @@ export const AttitudeWrapper = (props) => {
   const addAttitude = (description) => {
   
     const requestData = {
-      upCourse : upCourses.id,
+      upCourse : courseId,
       description:description,
       isEditing: false
     };
@@ -63,7 +65,7 @@ export const AttitudeWrapper = (props) => {
     }
     const editDescriptionAttitude = (description,  id) => {
   const requestData = {
-    upCourse : upCourses.id,
+    upCourse : courseId,
     description: description,
   };
 

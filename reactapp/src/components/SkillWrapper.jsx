@@ -3,15 +3,16 @@ import { SkillForm } from './SkillForm'
 import {v4 as uuidv4} from 'uuid'
 import { Skill } from './Skill'
 import { EditSkillForm } from './EditSkillForm';
+import {useParams} from 'react-router-dom';
 import DataContext from './Context/DataContext';
 import axios  from 'axios';
 uuidv4()
 
 export const SkillWrapper = (props) => {
+  const { curriculumId, syllabusId, courseId } = useParams();
   const {skills, setSkills} = props;
-  const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${courseId}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -28,7 +29,7 @@ export const SkillWrapper = (props) => {
   const addSkill = (description) => {
   
     const requestData = {
-      upCourse : upCourses.id,
+      upCourse : courseId,
       description:description,
       isEditing: false
     };
@@ -61,7 +62,7 @@ export const SkillWrapper = (props) => {
     }
     const editDescriptionSkill = (description,  id) => {
   const requestData = {
-    upCourse : upCourses.id,
+    upCourse : courseId,
     description: description,
   };
 

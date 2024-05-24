@@ -1,16 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react'
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 export const CloMapPloTable = () => {
 
+  const { curriculumId, syllabusId, courseId } = useParams();
   const [clos, setClos] = useState([]);
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${courseId}`)
       .then((res) => {
         setClos(res.data)
       }).catch(() => {
@@ -20,7 +21,7 @@ export const CloMapPloTable = () => {
 
   const [plos, setPlos] = useState([]);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${upSyllabuses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${syllabusId}`)
       .then((res) => {
         setPlos(res.data)
       }).catch(() => {
@@ -40,7 +41,7 @@ const isComplete = () => {
 
 
 useEffect(() => {
-  axios.get(`http://127.0.0.1:8000/api/clomapplo/?upCourse=${upCourses.id}`)
+  axios.get(`http://127.0.0.1:8000/api/clomapplo/?upCourse=${courseId}`)
     .then((res) => {
       if (res.status === 200) {
         if (res.data.length > 0) {
@@ -84,7 +85,7 @@ const handleSave = async () => {
   for (const key in localMapping) {
     const [cloIndex, ploIndex] = key.split('-');
     const correlationData = {
-      upCourse : upCourses.id,
+      upCourse : courseId,
       clo: parseInt(cloIndex, 10),
       plo: parseInt(ploIndex, 10),
       correlation_level: parseInt(localMapping[key], 10),
@@ -194,14 +195,14 @@ const handleSave = async () => {
         <button type='button' className='btn btn-success mb-5' onClick={handleSave}>Save</button>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/clo'>
+              <Link to={`/clo/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? '/ilo' : '#'}
+                to={(isComplete() && savedMapping) ? `/ilo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

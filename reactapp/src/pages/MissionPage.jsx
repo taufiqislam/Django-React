@@ -5,7 +5,7 @@ import axios from 'axios';
 export const MissionPage = () => {
   return (
     <div className='container-fluid g-0 Page'>
-      <MissionWrapper mission={missions} setMissions={setMissions}/>
+      <MissionWrapper/>
     </div>
   )
 }

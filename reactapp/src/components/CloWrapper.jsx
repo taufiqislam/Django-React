@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 import { Clo } from './Clo'
 import { EditCloForm } from './EditCloForm';
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import CloContext from "./Context/CloContext";
 import axios from 'axios';
 import DataContext from './Context/DataContext';
@@ -12,13 +12,13 @@ uuidv4()
 
 export const CloWrapper = () => {
 
-
+  const { curriculumId, syllabusId, courseId } = useParams();
   const [clos, setClos] = useState([]);
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${courseId}`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -35,7 +35,7 @@ export const CloWrapper = () => {
   const addClo = (clos,level) => {
   
     const requestData = {
-      upCourse : upCourses.id,
+      upCourse : courseId,
       descriptionCLO: clos,
       knowledge_level: level,
       isEditing: false
@@ -69,7 +69,7 @@ export const CloWrapper = () => {
     }
     const editDescriptionClo = (descriptionCLO, knowledge_level, id) => {
   const requestData = {
-    upCourse : upCourses.id,
+    upCourse : courseId,
     descriptionCLO: descriptionCLO,
     knowledge_level:knowledge_level // Include data for the knowledge_level column
     // Add other properties for additional columns here
@@ -137,14 +137,14 @@ export const CloWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/courseobjective'>
+              <Link to={`/courseobjective/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? '/clomapplo' : '#'}
+                  to={isComplete() ? `/clomapplo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

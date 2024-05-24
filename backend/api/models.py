@@ -191,4 +191,16 @@ class Outline(models.Model):
     def __str__(self):
         return self.heading
 
+class OutlineLast(models.Model):
+    upCourse=models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    attendanceP=models.IntegerField(blank=True,default=3)
+    tutP=models.IntegerField(blank=True,default=3)
+    finalP=models.IntegerField(blank=True,default=3)
+    tutF2F=models.IntegerField(blank=True,default=3)
+    finalF2F=models.IntegerField(blank=True,default=3)
+    tutnF2F=models.IntegerField(blank=True,default=3)
+    finalnF2F=models.IntegerField(blank=True,default=3)
+    tutStl=models.IntegerField(blank=True,default=3)
+    finalstl=models.IntegerField(blank=True,default=3) 
+
 

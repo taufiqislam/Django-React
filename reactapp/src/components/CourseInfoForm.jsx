@@ -1,10 +1,11 @@
 import React, {useState,useEffect,useContext} from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import axios from 'axios'
 import DataContext from './Context/DataContext';
 import logo from './logos/JU_logo2.png';
 export const CourseInfoForm = () => {
-
+  
+  const { curriculumId, syllabusId, courseId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
@@ -24,8 +25,8 @@ export const CourseInfoForm = () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    if (upCourses.id) {
-      axios.get(`http://127.0.0.1:8000/api/courseinfo/?upCourse=${upCourses.id}`)
+    if (courseId) {
+      axios.get(`http://127.0.0.1:8000/api/courseinfo/?upCourse=${courseId}`)
         .then((response) => {
           if (response.status === 200) {
             if (response.data.length > 0) {
@@ -54,12 +55,12 @@ export const CourseInfoForm = () => {
           console.error("Something went wrong");
         });
       }
-  }, [upCourses.id]);
+  }, [courseId]);
 
   const handleSubmit = async (e) => {
 
     const requestData = {
-    upCourse : upCourses.id,
+    upCourse : courseId,
     course_code: upCourses.code,
     credit: credit,
     title: upCourses.title,
@@ -187,14 +188,14 @@ export const CourseInfoForm = () => {
         </form>
         <div className='row form-group '>
             <div className='col-6 text-start'>
-              <Link to='/course'>
+              <Link to={`/course/${curriculumId}/${syllabusId}`}>
                 <button type='button' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? '/courseobjective' : '#'}
+                  to={isComplete() ? `/courseobjective/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

@@ -3,7 +3,7 @@ import { BookReferenceForm } from './BookReferenceForm'
 import {v4 as uuidv4} from 'uuid'
 import { EditBookReferenceForm } from './EditBookReferenceForm';
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import {BookReference} from "./Bookreference";
 import axios from 'axios';
 import DataContext from './Context/DataContext';
@@ -11,12 +11,13 @@ uuidv4()
 
 export const BookReferenceWrapper = () => {
 
+    const { curriculumId, syllabusId, courseId } = useParams();
     const [bookReferences, setBookReferences] = useState([]);
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     const {upCourses} = useContext(DataContext);
     useEffect(() => {
-      axios.get(`http://127.0.0.1:8000/api/book/?upCourse=${upCourses.id}`)
+      axios.get(`http://127.0.0.1:8000/api/book/?upCourse=${courseId}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -34,7 +35,7 @@ export const BookReferenceWrapper = () => {
     const addBookReference = (name,author,publisher,year,edition) => {
     
       const requestData = {
-        upCourse : upCourses.id,
+        upCourse : courseId,
         name: name,
         author: author,
         publisher:publisher,
@@ -71,7 +72,7 @@ export const BookReferenceWrapper = () => {
       }
       const editDescriptionBookReference = (name,author,publisher,year,edition, id) => {
     const requestData = {
-        upCourse : upCourses.id,
+        upCourse : courseId,
         name: name,
         author: author,
         publisher:publisher,
@@ -143,7 +144,7 @@ export const BookReferenceWrapper = () => {
         </table>
         <div className='row'>
             <div className='text-start'>
-              <Link to='/courseassessment'>
+              <Link to={`/courseassessment/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

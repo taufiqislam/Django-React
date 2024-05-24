@@ -1,13 +1,14 @@
 import React, {useContext, useState, useEffect} from 'react'
 import MissionContext from "./Context/MissionContext";
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import PeoContext from './Context/PeoContext';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 
 
 export const PeoMapMissionTable = () => {
+  const {curriculumId, syllabusId} = useParams();
   const [missions, setMissions] = useState([]);
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
@@ -22,7 +23,7 @@ export const PeoMapMissionTable = () => {
 
     const [peos, setPeos] = useState([]);
     useEffect(() => {
-      axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${upSyllabuses.id}`)
+      axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${syllabusId}`)
         .then((res) => {
           setPeos(res.data)
         }).catch(() => {
@@ -34,7 +35,7 @@ const [localMapping, setLocalMapping] = useState({});
 const [savedMapping, setSavedMapping] = useState(true);
 
 useEffect(() => {
-  axios.get(`http://127.0.0.1:8000/api/mappings/?upSyllabus=${upSyllabuses.id}`)
+  axios.get(`http://127.0.0.1:8000/api/mappings/?upSyllabus=${syllabusId}`)
     .then((res) => {
       if (res.status === 200) {
         if (res.data.length > 0) {
@@ -84,7 +85,7 @@ const handleSave = async () => {
   for (const key in localMapping) {
     const [peoIndex, missionIndex] = key.split('-');
     const correlationData = {
-      upSyllabus: upSyllabuses.id,
+      upSyllabus: syllabusId,
       peo: parseInt(peoIndex, 10),
       mission: parseInt(missionIndex, 10),
       correlation_level: parseInt(localMapping[key], 10),
@@ -192,14 +193,14 @@ const handleSave = async () => {
         <button type='button' className='btn btn-success mb-5' onClick={handleSave}>Save</button>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/peo'>
+              <Link to={`/peo/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? '/plo' : '#'}
+                to={(isComplete() && savedMapping) ? `/plo/${curriculumId}/${syllabusId}` : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

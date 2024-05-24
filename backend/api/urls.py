@@ -22,6 +22,7 @@ router.register(r'api/course', CourseViewSet, basename='course')
 router.register(r'api/assess', AssessViewSet, basename='assess')
 router.register(r'api/courseinfo', CourseInfoViewSet, basename='courseinfo')
 router.register(r'api/outline', OutlineViewSet, basename='outline')
+router.register(r'api/outlinelast', OutlineLastSet, basename='outlinelast')
 urlpatterns = [
     *router.urls,
     path('api/outline/<int:outline_id>/clos/', add_clos_to_outline, name='add-clos-to-outline'),

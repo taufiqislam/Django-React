@@ -7,16 +7,16 @@ import BscSemester from "./BSCSemester";
 import BscYear from "./BSCYear";
 import SyllabusTable from "./SyllabusTable";
 import logo from "./logos/JU_logo2.png";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import DataContext from './Context/DataContext';
 import axios from 'axios';
 
 function Syllabus(props) {
-    
-    const {setShowSyllabuses} = useContext(DataContext);
-    const {setShowPrograms} = useContext(DataContext);
+    const { curriculumId } = useParams();
     const {upCurriculums,setUpCurriculums} = useContext(DataContext);
     const {upSyllabuses,setUpSyllabuses} = useContext(DataContext);
+    const [startingSession, setStartingSession] = useState('');
+    const [endingSession, setEndingSession] = useState('');
     const [syllabuses, setSyllabuses] = useState([]);
     const [selectedOption,setSelectedOption] = useState('');
     const [program,setProgram] = useState('');
@@ -25,9 +25,26 @@ function Syllabus(props) {
     const [yearValue,setYearValue] = useState('');
 
     useEffect(() => {
-        if (upCurriculums.id) {
+        if (curriculumId) {
+            axios.get(`http://127.0.0.1:8000/api/curriculum/${curriculumId}/`)
+                .then((res) => {
+                    if (res.status === 200) {
+                        setStartingSession(res.data.starting);
+                        setEndingSession(res.data.ending);
+                    } else {
+                        console.error("Failed to fetch curriculum data from the server");
+                    }
+                })
+                .catch(() => {
+                    console.error("Something went wrong while fetching curriculum data");
+                });
+        }
+    }, [curriculumId]);
+
+    useEffect(() => {
+        if (curriculumId) {
             console.log(upCurriculums);
-            axios.get(`http://127.0.0.1:8000/api/syllabus/?upCurriculum=${upCurriculums.id}`)
+            axios.get(`http://127.0.0.1:8000/api/syllabus/?upCurriculum=${curriculumId}`)
                 .then((res) => {
                     if (res.status === 200) {
                         if (res.data.length > 0) {
@@ -41,13 +58,12 @@ function Syllabus(props) {
                     console.error("Something went wrong");
                 });
         }
-    }, [upCurriculums.id]);
+    }, [curriculumId]);
     
       
     const addSyllabus = () => {
-        console.log(upCurriculums);
         const requestData = {
-            upCurriculum: parseInt(upCurriculums.id, 10), 
+            upCurriculum: parseInt(curriculumId, 10), 
             program: program,
             selectedOption: selectedOption, 
             yearValue: yearValue, 
@@ -98,17 +114,25 @@ function Syllabus(props) {
         setSession(e.target.value);
     }
 
-    const handleClick = (syllabus) => {
-        setUpSyllabuses(syllabus);
-        setShowPrograms(true);
-        setShowSyllabuses(false);
+    const generateSessionOptions = () => {
+        const sessions = [];
+        if (startingSession && endingSession) {
+            const startYear = parseInt(startingSession.split('-')[0]);
+            const endYear = parseInt(endingSession.split('-')[0]);
+            for (let year = startYear; year <= endYear; year++) {
+                sessions.push(`${year}-${year + 1}`);
+            }
+        }
+        return sessions;
     };
+    const sessionOptions = generateSessionOptions();
+
     return (
         <Fragment>
             <Container className="Wrapper">
                 <div className='row'>
                     <div className='col-4 Heading1'>
-                        <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+                        <p>Curriculum: {startingSession} - {endingSession}</p>
                     </div>
                     <div className='col-4 Heading2'>
                         <h2 >Programs</h2>
@@ -168,10 +192,9 @@ function Syllabus(props) {
                             <label htmlFor="" className='input-label'>Starting Session</label>
                             <Form.Select onChange={sessionHandle} value={session} >
                                 <option value="">choose session</option>
-                                <option value="2018-2019">2018-2019</option>
-                                <option value="2019-2020">2019-2020</option>
-                                <option value="2020-2021">2020-2021</option>
-                                <option value="2021-2022">2021-2022</option>
+                                {sessionOptions.map((session) => (
+                                    <option key={session} value={session}>{session}</option>
+                                ))}
                             </Form.Select>
                         </div>
                     </Col>
@@ -222,27 +245,27 @@ function Syllabus(props) {
                         {syllabuses.map((syllabus, index) => (
                                 <tr key={index} className='nav-item'>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
+                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.program}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
+                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.selectedOption}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
+                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.session}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
+                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.yearValue}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/peo' className='nav-link' onClick={() => handleClick(syllabus)}>
+                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.semesterValue}</span>
                                         </Link>
                                     </td>

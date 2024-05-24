@@ -1,16 +1,17 @@
 import React, {useContext, useState, useEffect} from 'react'
 import PeoContext from "./Context/PeoContext";
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import PloContext from './Context/PloContext';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 export const PloMapPeoTable = () => {
   const [plos, setPlos] = useState([]);
+  const { curriculumId, syllabusId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${upSyllabuses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/plo/?upSyllabus=${syllabusId}`)
       .then((res) => {
         setPlos(res.data)
       }).catch(() => {
@@ -20,7 +21,7 @@ export const PloMapPeoTable = () => {
 
   const [peos, setPeos] = useState([]);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${upSyllabuses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${syllabusId}`)
       .then((res) => {
         setPeos(res.data)
       }).catch(() => {
@@ -39,7 +40,7 @@ const isComplete = () => {
 
 
 useEffect(() => {
-  axios.get(`http://127.0.0.1:8000/api/plomappeo/?upSyllabus=${upSyllabuses.id}`)
+  axios.get(`http://127.0.0.1:8000/api/plomappeo/?upSyllabus=${syllabusId}`)
     .then((res) => {
       if (res.status === 200) {
         if (res.data.length > 0) {
@@ -83,7 +84,7 @@ const handleSave = async () => {
   for (const key in localMapping) {
     const [ploIndex, peoIndex] = key.split('-');
     const correlationData = {
-      upSyllabus: upSyllabuses.id,
+      upSyllabus: syllabusId,
       plo: parseInt(ploIndex, 10),
       peo: parseInt(peoIndex, 10),
       correlation_level: parseInt(localMapping[key], 10),
@@ -187,14 +188,14 @@ const handleSave = async () => {
         <button type='button' className='btn btn-success mb-5' onClick={handleSave}>Save</button>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/plo'>
+              <Link to= {`/plo/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? '/course' : '#'}
+                to={(isComplete() && savedMapping) ? `/course/${curriculumId}/${syllabusId}` : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

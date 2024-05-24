@@ -5,7 +5,7 @@ import { Peo } from './Peo'
 import { EditPeoForm } from './EditPeoForm';
 import PeoContext from "./Context/PeoContext";
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 uuidv4()
@@ -13,10 +13,11 @@ uuidv4()
 export const PeoWrapper = () => {
 
     const [peos, setPeos] = useState([]);
+    const { curriculumId, syllabusId } = useParams();
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     useEffect(() => {
-      axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${upSyllabuses.id}`)
+      axios.get(`http://127.0.0.1:8000/api/peo/?upSyllabus=${syllabusId}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -32,7 +33,7 @@ export const PeoWrapper = () => {
         })
     }, [])
     const addPeo = peos => {
-      const requestData = {upSyllabus: upSyllabuses.id, descriptionPEO: peos, isEditing: false};
+      const requestData = {upSyllabus: syllabusId, descriptionPEO: peos, isEditing: false};
     
       axios
         .post('http://127.0.0.1:8000/api/peo/', requestData)
@@ -67,7 +68,7 @@ export const PeoWrapper = () => {
     };
     const editDescription = (descriptionPEO, id) => {
     
-    const requestData = {upSyllabus: upSyllabuses.id, descriptionPEO: descriptionPEO };
+    const requestData = {upSyllabus: syllabusId, descriptionPEO: descriptionPEO };
 
     axios
       .put(`http://127.0.0.1:8000/api/peo/${id}/`, requestData)
@@ -117,14 +118,14 @@ export const PeoWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/syllabus'>
+              <Link to={`/syllabus/${curriculumId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? '/peomapmission' : '#'}
+                  to={isComplete() ? `/peomapmission/${curriculumId}/${syllabusId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

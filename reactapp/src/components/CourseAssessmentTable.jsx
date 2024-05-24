@@ -1,10 +1,12 @@
 import logo from './logos/JU_logo2.png';
 import React, {useState,useEffect,useContext} from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import axios from 'axios'
 import DataContext from './Context/DataContext';
 
 const CourseAssessmentTable = () => {
+
+  const { curriculumId, syllabusId, courseId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
@@ -54,7 +56,7 @@ const CourseAssessmentTable = () => {
    }, [rem_fest, rem_assign, rem_exper, un_fest, un_assign, un_exper, apply_fest, apply_assign, apply_exper, analyze_fest, analyze_assign, analyze_exper, eva_fest, eva_assign, eva_exper, c_fest, c_assign, c_exper, rem_final, apply_final, analyze_final, eva_final, c_final, un_final]);
 
   useEffect(() => {
-     axios.get(`http://127.0.0.1:8000/api/assess/?upCourse=${upCourses.id}`)
+     axios.get(`http://127.0.0.1:8000/api/assess/?upCourse=${courseId}`)
        .then((response) => {
          if (response.status === 200) {
            if (response.data.length > 0) {
@@ -100,7 +102,7 @@ const CourseAssessmentTable = () => {
   const handleSubmit = async (e) => {
 
     const requestData = {
-     upCourse : upCourses.id,
+     upCourse : courseId,
      rem_fest: rem_fest,
      rem_assign: rem_assign,
      rem_exper: rem_exper,
@@ -242,13 +244,13 @@ const CourseAssessmentTable = () => {
         </form>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/ilo'>
+              <Link to = {`/outline/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
-              <Link to='/bookreference'>
+              <Link to={`/bookreference/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='form-btn btn'>Next</button>
               </Link>
               

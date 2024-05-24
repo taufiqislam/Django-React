@@ -200,3 +200,10 @@ def add_att_to_outline(request, outline_id):
     serializer = OutlineSerializer(outline)
     return Response(serializer.data)    
 
+class OutlineLastSet(viewsets.ModelViewSet):
+    serializer_class = Outserial   
+    def get_queryset(self):
+        up_course_id = self.request.query_params.get('upCourse')
+        if up_course_id:
+            return OutlineLast.objects.filter(upCourse=up_course_id)
+        return OutlineLast.objects.all()

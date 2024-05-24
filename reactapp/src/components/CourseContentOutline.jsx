@@ -2,8 +2,10 @@ import React, { useState, useEffect,useContext } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
+import { useParams } from 'react-router-dom';
 
 const CourseContentOutline = ({ addOutline }) => {
+  const { curriculumId, syllabusId, courseId } = useParams();
   const {upCourses} = useContext(DataContext);
   const [heading, setHeading] = useState('');
   const [description, setDescription] = useState('');
@@ -25,7 +27,7 @@ const CourseContentOutline = ({ addOutline }) => {
   const [selectedSkills, setSelectedSkills] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${courseId}`)
       .then(response => {
         setClos(response.data);
       })
@@ -33,7 +35,7 @@ const CourseContentOutline = ({ addOutline }) => {
         console.error('Error fetching CLOs:', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/knowledge/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/knowledge/?upCourse=${courseId}`)
       .then(response => {
         setKnows(response.data);
       })
@@ -41,7 +43,7 @@ const CourseContentOutline = ({ addOutline }) => {
         console.error('Error fetching Knowledge:', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/attitude/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/attitude/?upCourse=${courseId}`)
       .then(response => {
         setAtts(response.data);
       })
@@ -49,7 +51,7 @@ const CourseContentOutline = ({ addOutline }) => {
         console.error('Error fetching Attitudes:', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${upCourses.id}`)
+    axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${courseId}`)
       .then(response => {
         setSkills(response.data);
       })

@@ -3,11 +3,12 @@ import { KnowledgeWrapper } from './KnowldedgeWrapper'
 import { SkillWrapper } from './SkillWrapper'
 import { AttitudeWrapper } from './AttitudeWrapper'
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import DataContext from './Context/DataContext';
 
 export const IloWrapper = () => {
 
+  const { curriculumId, syllabusId, courseId } = useParams();
   const [knowledges, setKnowledges] = useState([]);
 
   const [skills, setSkills] = useState([]);
@@ -42,14 +43,14 @@ export const IloWrapper = () => {
         
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/clomapplo'>
+              <Link to={`/clomapplo/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? '/courseassessment' : '#'}
+                  to={isComplete() ? `/outline/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

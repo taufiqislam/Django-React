@@ -4,19 +4,20 @@ import {v4 as uuidv4} from 'uuid'
 import { CourseObjective } from './CourseObjective'
 import { EditCourseObjectiveForm } from './EditCourseObjectiveForm';
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import axios from 'axios';
 import DataContext from './Context/DataContext';
 uuidv4()
 
 export const CourseObjectiveWrapper = () => {
 
+  const { curriculumId, syllabusId, courseId } = useParams();
     const [courseObjectives, setCourseObjectives] = useState([])
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     const {upCourses} = useContext(DataContext);
     useEffect(() => {
-      axios.get(`http://127.0.0.1:8000/api/CO/?upCourse=${upCourses.id}`)
+      axios.get(`http://127.0.0.1:8000/api/CO/?upCourse=${courseId}`)
         .then((res) => {
           if (res.status === 200) {
             if (res.data.length > 0) {
@@ -33,7 +34,7 @@ export const CourseObjectiveWrapper = () => {
     const addCourseObjective = (description) => {
     
       const requestData = {
-        upCourse : upCourses.id,
+        upCourse : courseId,
         description:description,
         isEditing: false
       };
@@ -66,7 +67,7 @@ export const CourseObjectiveWrapper = () => {
       }
       const editDescriptionCourseObjective = (description,  id) => {
     const requestData = {
-      upCourse : upCourses.id,
+      upCourse : courseId,
       description: description,
     };
   
@@ -129,14 +130,14 @@ export const CourseObjectiveWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/courseinfo'>
+              <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? '/clo' : '#'}
+                  to={isComplete() ? `/clo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

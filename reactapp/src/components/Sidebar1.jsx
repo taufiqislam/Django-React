@@ -230,7 +230,6 @@ export const Sidebar = () => {
                 )}
 
            </ul>
-           <Button className="btn btn-danger logout">Logout</Button>
        </div>
    </Fragment>
   )

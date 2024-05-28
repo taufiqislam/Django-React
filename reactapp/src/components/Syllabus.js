@@ -132,7 +132,7 @@ function Syllabus(props) {
             <Container className="Wrapper">
                 <div className='row'>
                     <div className='col-4 Heading1'>
-                        <p>Curriculum: {startingSession} - {endingSession}</p>
+                        {/* <p>Curriculum: {startingSession} - {endingSession}</p> */}
                     </div>
                     <div className='col-4 Heading2'>
                         <h2 >Programs</h2>

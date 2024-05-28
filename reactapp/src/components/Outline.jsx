@@ -1,6 +1,9 @@
 import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPenToSquare} from '@fortawesome/free-solid-svg-icons'
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
 
-export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,selectedCLOs, selectedKnows,selectedAtts,selectedSkills ,index }) => {
+export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,selectedCLOs, selectedKnows,selectedAtts,selectedSkills ,index,deleteoutline,editOutline }) => {
   const getCLOIndex = (cloId) => {
     console.log(allClos)
     const index = allClos.findIndex(clo => clo.id === cloId);
@@ -25,19 +28,22 @@ export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,sele
       
       <tr>
         <td >{index + 1}</td>
-        <td colSpan={12}>{description.heading}{description.description}</td>
+        <td colSpan={12} className='text-start'>
+          <div className='fw-bold'>{description.heading}:</div>
+          <div>{description.description}</div>
+        </td>
         <td colSpan={4}>{selectedCLOs.map((cloId, i) => (
           <span key={i}> CLO {getCLOIndex(cloId)}</span>
         ))}</td>
         <td  colSpan={4}>
         { selectedKnows.length > 0 && selectedKnows.map((knowId, i) => (
-    <span key={i}> Knowledge {getKnowIndex(knowId)}</span>
+    <span key={i}> a{getKnowIndex(knowId)}</span>
   ))}  
   { selectedAtts.length > 0 && selectedAtts.map((attId, i) => (
-    <span key={i}> Attitude {getAttIndex(attId)}</span>
+    <span key={i}> b{getAttIndex(attId)}</span>
   ))}  
   { selectedSkills.length > 0 && selectedSkills.map((skillId, i) => (
-    <span key={i}> Skill {getSkillIndex(skillId)}</span>
+    <span key={i}> c{getSkillIndex(skillId)}</span>
   ))}
         </td>
        
@@ -48,6 +54,8 @@ export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,sele
         <td  colSpan={2}>{description.nonfaceToface}</td>
         <td colSpan={4} >{description.ilearn}</td>
         <td colSpan={2} >{description.totalSlt}</td>
+        <FontAwesomeIcon icon={faTrash} onClick={() => deleteoutline(description.id)}/>
+        <FontAwesomeIcon icon={faPenToSquare} onClick={() => editOutline(description.id)}/>
       </tr>
     </>
   );

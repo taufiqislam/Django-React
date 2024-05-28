@@ -133,8 +133,8 @@ const handleSave = async () => {
     <div className='Wrapper' id='peomapmission'>
         <div className='row'>
           <div className='col-4 Heading1'>
-          <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
-          <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
+          {/* <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+          <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p> */}
           </div>
           <div className='col-4 Heading2'>
             <h2>Mapping of PEO and Mission</h2>

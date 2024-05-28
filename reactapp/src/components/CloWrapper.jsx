@@ -102,9 +102,9 @@ export const CloWrapper = () => {
     <div className='Wrapper' id='clo'>
         <div className='row'>
           <div className='col-4 Heading1'>
-            <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+            {/* <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
             <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
-            <p>Course: {upCourses.code}</p>
+            <p>Course: {upCourses.code}</p> */}
           </div>
           <div className='col-4 Heading2'>
             <h2 >Course Learning Outcomes (CLO)</h2>

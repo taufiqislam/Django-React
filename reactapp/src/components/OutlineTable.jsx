@@ -6,6 +6,7 @@ import { Outline } from './Outline';
 import {useParams,Link} from 'react-router-dom';
 import axios from 'axios';
 import DataContext from './Context/DataContext';
+import EditOutline from './EditOutline';
 
 const OutlineTable = () => {
 
@@ -41,14 +42,6 @@ const OutlineTable = () => {
       .then((res) => {
         if (res.status === 200 && res.data.length > 0) {
           setOutlines(res.data);
-          const lSum = res.data.reduce((acc, curr) => acc + curr.lecture, 0);
-          const eSum = res.data.reduce((acc, curr) => acc + curr.exercise, 0);
-          const n2fSum = res.data.reduce((acc, curr) => acc + curr.nonfaceToface, 0);
-          const stlSum = res.data.reduce((acc, curr) => acc + curr.totalSlt, 0);
-          setSumL(lSum);
-          setSumE(eSum);
-          setSumN2F(n2fSum);
-          setSumSTL(stlSum);
         } else {
           console.error("Failed to fetch outline data from the server");
         }
@@ -105,7 +98,27 @@ const OutlineTable = () => {
         console.error("Something went wrong while fetching Skill data");
       });
   }, []);
-
+  const deleteoutline = (id) => {
+    axios.delete(`http://127.0.0.1:8000/api/outline/${id}/`)
+        .then(() => {
+            const newoutline = outlines.filter(t => {
+                return t.id !== id
+            });
+            setOutlines(newoutline);
+        }).catch(() => {
+            alert("Something went wrong");
+        })
+}
+  useEffect(() => {
+    const lSum = outlines.reduce((acc, curr) => acc + curr.lecture, 0);
+    const eSum = outlines.reduce((acc, curr) => acc + curr.exercise, 0);
+    const n2fSum = outlines.reduce((acc, curr) => acc + curr.nonfaceToface, 0);
+    const stlSum = outlines.reduce((acc, curr) => acc + curr.totalSlt, 0);
+    setSumL(lSum);
+    setSumE(eSum);
+    setSumN2F(n2fSum);
+    setSumSTL(stlSum);
+  }, [outlines]);
 
   useEffect(() => {
     const fetchOutlineLast = async () => {
@@ -226,6 +239,68 @@ const OutlineTable = () => {
   const isComplete = () => {
     return outlines.length !== 0;
   };
+  const editOutline = id => {
+    setOutlines(outlines.map(outline => outline.id === id ? {...outline, isEditing: !outline.isEditing} : outline))
+}
+const updateOutline = (id, heading, description, nonfaceToface, lecture, exercise, practical, others, ilearn, totalSlt, selectedCLOs, selectedKnows, selectedAtts, selectedSkills) => {
+  const requestData = {
+    upCourse: courseId,
+    heading: heading,
+    description: description,
+    nonfaceToface: nonfaceToface,
+    lecture: lecture,
+    exercise: exercise,
+    practical: practical,
+    others: others,
+    ilearn: ilearn,
+    totalSlt: totalSlt,
+  };
+
+  axios.put(`http://127.0.0.1:8000/api/outline/${id}/`, requestData)
+    .then((response) => {
+      const updatedOutline = response.data;
+
+      axios.post(`http://127.0.0.1:8000/api/outline/${id}/clos/`, { clos: selectedCLOs })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error("Error updating CLOs for Outline:", err);
+        });
+
+      axios.post(`http://127.0.0.1:8000/api/outline/${id}/knows/`, { knows: selectedKnows })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error("Error updating Knowledge for Outline:", err);
+        });
+
+      axios.post(`http://127.0.0.1:8000/api/outline/${id}/atts/`, { atts: selectedAtts })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error("Error updating Attitudes for Outline:", err);
+        });
+
+      axios.post(`http://127.0.0.1:8000/api/outline/${id}/skills/`, { skills: selectedSkills })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error("Error updating Skills for Outline:", err);
+        });
+        response.data.clos = selectedCLOs;
+        response.data.knows = selectedKnows;
+        response.data.atts = selectedAtts;
+        response.data.skills = selectedSkills;
+      setOutlines(prevOutlines => prevOutlines.map(outline => outline.id === id ? updatedOutline : outline));
+    })
+    .catch((error) => {
+      console.error("Error updating Outline:", error);
+    });
+}
 
   const sum = useMemo(() => tutStl + finalstl, [tutStl, finalstl]);
   
@@ -235,9 +310,9 @@ const OutlineTable = () => {
         <div>
             <div className='row'>
                 <div className='col-4 Heading1'>
-                <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
+                {/* <p>Curriculum: {upCurriculums.starting} - {upCurriculums.ending}</p>
                 <p>Program: {upSyllabuses.program} {upSyllabuses.selectedOption} {upSyllabuses.yearValue} {upSyllabuses.semesterValue} {upSyllabuses.session}</p>
-                <p>Course: {upCourses.code}</p>
+                <p>Course: {upCourses.code}</p> */}
                 </div>
                 <div className='col-4 Heading2'>
                 <h2 >Course Content Outline</h2>
@@ -255,12 +330,17 @@ const OutlineTable = () => {
                     <th colSpan={4} rowSpan={5}>CLO</th>
                     <th colSpan={4} rowSpan={5}>ILO</th>
                     <th colSpan={12}>Teaching and Learning Activities</th>
+                    <th rowSpan={5}></th>
+            
+                    
+                    
 
                 </tr>
                 <tr>
                     <th colSpan={6}>Guided Learning</th>
                     <th colSpan={4} rowSpan={4}>Independent Learning(NF2F)</th>
-                    <th colSpan={2} rowSpan={4}>Total SLT</th>
+                    <th colSpan={2} rowSpan={4}>Total SLT</th>                    
+                    
                 </tr>
 
                 <tr>
@@ -269,6 +349,7 @@ const OutlineTable = () => {
 
                     <th colSpan={4} rowSpan={2}>F2F</th>
                     <th colSpan={2} rowSpan={2}>Non-F2F</th>
+                    
                 </tr>
                 <tr>
                 </tr>
@@ -279,6 +360,7 @@ const OutlineTable = () => {
                     <th >P</th>
                     <th >O</th>
                     <th colSpan={2} >NF2F</th>
+                    
                 </tr>
                 </thead>
                 <tbody>
@@ -286,7 +368,8 @@ const OutlineTable = () => {
                 {
                 outlines.map((outline,index) => (
                 
-               
+                outline.isEditing ? (<EditOutline editOutline={updateOutline} descriptionoutline={outline}/>
+                ):
                // Inside the OutlineTable component where you render the Outline component
                   
                 <Outline
@@ -305,7 +388,8 @@ const OutlineTable = () => {
                 sumE={sumE} // Pass sumE as a prop
                 sumN2F={sumN2F} // Pass sumN2F as a prop
                 sumSTL={sumSTL}
-                />
+                deleteoutline={deleteoutline}
+                editOutline={editOutline}                />
 
          
 
@@ -314,14 +398,14 @@ const OutlineTable = () => {
 
                 }
                 <tr>
-                  <td colSpan={21}></td>
+                  <td colSpan={21}>Total</td>
                   <td>{sumL}</td>
                   <td>{sumE}</td>
                   <td></td>
                   <td></td>
                   <td>{sumN2F}</td>
                   <td colspan={5}></td>
-                  <td >{sumSTL}</td>
+                  <td colspan={3} >{sumSTL}</td>
                 </tr>
             
                 </tbody>

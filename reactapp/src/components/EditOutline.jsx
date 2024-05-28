@@ -4,27 +4,27 @@ import axios from 'axios';
 import DataContext from './Context/DataContext';
 import { useParams } from 'react-router-dom';
 
-const CourseContentOutline = ({ addOutline }) => {
+const EditOutline = ({  editOutline,descriptionoutline}) => {
   const { curriculumId, syllabusId, courseId } = useParams();
   const {upCourses} = useContext(DataContext);
-  const [heading, setHeading] = useState('');
-  const [description, setDescription] = useState('');
+  const [heading, setHeading] = useState(descriptionoutline.heading);
+  const [description, setDescription] = useState(descriptionoutline.description);
   const [faceToFaceHours, setFaceToFaceHours] = useState('');
-  const [lectureHours, setLectureHours] = useState('');
-  const [exerciseHours, setExerciseHours] = useState('');
-  const [practicalHours, setPracticalHours] = useState('');
-  const [othersHours, setOthersHours] = useState('');
-  const [nonFaceToFaceHours, setNonFaceToFaceHours] = useState('');
-  const [independentLearningHours, setIndependentLearningHours] = useState('');
-  const [totalSLTHours, setTotalSLTHours] = useState('');
+  const [lectureHours, setLectureHours] = useState(descriptionoutline.lecture);
+  const [exerciseHours, setExerciseHours] = useState(descriptionoutline.exercise);
+  const [practicalHours, setPracticalHours] = useState(descriptionoutline.practical);
+  const [othersHours, setOthersHours] = useState(descriptionoutline.others);
+  const [nonFaceToFaceHours, setNonFaceToFaceHours] = useState(descriptionoutline.nonfaceToface);
+  const [independentLearningHours, setIndependentLearningHours] = useState(descriptionoutline.ilearn);
+  const [totalSLTHours, setTotalSLTHours] = useState(descriptionoutline.totalSlt);
   const [clos, setClos] = useState([]);
   const [knows, setKnows] = useState([]);
   const [atts, setAtts] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [selectedClos, setSelectedClos] = useState([]);
-  const [selectedKnows, setSelectedKnows] = useState([]);
-  const [selectedAtts, setSelectedAtts] = useState([]);
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedClos, setSelectedClos] = useState(descriptionoutline.clos);
+  const [selectedKnows, setSelectedKnows] = useState(descriptionoutline.knows);
+  const [selectedAtts, setSelectedAtts] = useState(descriptionoutline.atts);
+  const [selectedSkills, setSelectedSkills] = useState(descriptionoutline.skills);
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/clo/?upCourse=${courseId}`)
@@ -63,7 +63,8 @@ const CourseContentOutline = ({ addOutline }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addOutline(
+    editOutline(
+      descriptionoutline.id,
       heading,
       description,
 
@@ -77,7 +78,8 @@ const CourseContentOutline = ({ addOutline }) => {
       selectedClos,
       selectedKnows,
       selectedAtts,
-      selectedSkills
+      selectedSkills,
+      
     );
 
     setHeading('');
@@ -137,9 +139,10 @@ const CourseContentOutline = ({ addOutline }) => {
   };
 
   return (
-    <Container>
-      <Row>
-        <div>
+
+        <tr>
+          <td colSpan={35}>
+       
           <form className='ObeForm' onSubmit={handleSubmit}>
             <label className='input-label'>Heading:</label>
             <input type="text" className="form-control form-input" placeholder="Enter Topic Heading" value={heading} onChange={(e) => (setHeading(e.target.value))} required />
@@ -240,12 +243,13 @@ const CourseContentOutline = ({ addOutline }) => {
             <input type="number" className="form-control form-input" placeholder="Write Here" value={independentLearningHours} onChange={(e) => (setIndependentLearningHours(e.target.value))} />
             <label htmlFor="inputEmail3" className='input-label'>Total SLT (Hours):</label>
             <input type="number" className="form-control form-input" placeholder="Write Here" value={totalSLTHours} onChange={(e) => (setTotalSLTHours(e.target.value))} />
-            <button type="submit" className="btn btn-success">Add</button>
+            <button type="submit" className="btn btn-success">Save</button>
           </form>
-        </div>
-      </Row>
-    </Container>
+   
+        </td>
+        </tr>
+
   );
 };
 
-export default CourseContentOutline;
+export default EditOutline;

@@ -6,7 +6,7 @@ import DataContext from './Context/DataContext';
 
 const CourseAssessmentTable = () => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
@@ -185,50 +185,50 @@ const CourseAssessmentTable = () => {
                 <tr >
                      <th >Remember</th>
                 
-                     <td><input required name="rem_fest" type="number"  value={rem_fest} onChange={(e) => setRem_fest(e.target.value)} className=' form-input form-control'/></td>
-                     <td><input required name="rem_assign" type="number" value={rem_assign} onChange={(e) => setRem_assign(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="rem_exper" type="number"  value={rem_exper} onChange={(e) => setRem_exper(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="rem_final" type="number" value={rem_final} onChange={(e) => setRem_final(e.target.value)} className='form-input form-control'/></td>
+                     <td><input required name="rem_fest" type="number"  value={rem_fest} onChange={(e) => setRem_fest(e.target.value)} className=' form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="rem_assign" type="number" value={rem_assign} onChange={(e) => setRem_assign(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="rem_exper" type="number"  value={rem_exper} onChange={(e) => setRem_exper(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="rem_final" type="number" value={rem_final} onChange={(e) => setRem_final(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Understand</th>
                 
-                     <td><input required name="un_fest"  value={un_fest} onChange={(e) => setUn_fest(e.target.value)} type="number" className='form-input form-control'/></td>
-                     <td><input required name="un_assign" value={un_assign} onChange={(e) => setUn_assign(e.target.value)} type="number" className='form-input form-control'/></td>
-                     <td><input required name="un_exper" value={un_exper} onChange={(e) => setUn_exper(e.target.value)} type="number" className='form-input form-control'/></td>
-                     <td><input required name="un_final" value={un_final} onChange={(e) => setUn_final(e.target.value)} type="number" className='form-input form-control'/></td>
+                     <td><input required name="un_fest"  value={un_fest} onChange={(e) => setUn_fest(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="un_assign" value={un_assign} onChange={(e) => setUn_assign(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="un_exper" value={un_exper} onChange={(e) => setUn_exper(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="un_final" value={un_final} onChange={(e) => setUn_final(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Apply</th>
                 
-                     <td><input required name="apply_fest" type="number" value={apply_fest} onChange={(e) => setApply_fest(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="apply_assign" type="number" value={apply_assign} onChange={(e) => setApply_assign(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="apply_exper" value={apply_exper} onChange={(e) => setApply_exper(e.target.value)} type="number" className='form-input form-control'/></td>
-                     <td><input required name="apply_final" value={apply_final} onChange={(e) => setApply_final(e.target.value)} type="number" className='form-input form-control'/></td>
+                     <td><input required name="apply_fest" type="number" value={apply_fest} onChange={(e) => setApply_fest(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="apply_assign" type="number" value={apply_assign} onChange={(e) => setApply_assign(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="apply_exper" value={apply_exper} onChange={(e) => setApply_exper(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="apply_final" value={apply_final} onChange={(e) => setApply_final(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Analyze</th>
                 
-                     <td><input required name="analyze_fest" type="number"  value={analyze_fest} onChange={(e) => setAnalyze_fest(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="analyze_assign" type="number" value={analyze_assign} onChange={(e) => setAnalyze_assign(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="analyze_exper" type="number" value={analyze_exper} onChange={(e) => setAnalyze_exper(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="analyze_final" type="number"  value={analyze_final} onChange={(e) => setAnalyze_final(e.target.value)} className='form-input form-control'/></td>
+                     <td><input required name="analyze_fest" type="number"  value={analyze_fest} onChange={(e) => setAnalyze_fest(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="analyze_assign" type="number" value={analyze_assign} onChange={(e) => setAnalyze_assign(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="analyze_exper" type="number" value={analyze_exper} onChange={(e) => setAnalyze_exper(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="analyze_final" type="number"  value={analyze_final} onChange={(e) => setAnalyze_final(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Evaluate</th>
                 
-                     <td><input required name="eva_fest" type="number" value={eva_fest} onChange={(e) => setEva_fest(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="eva_assign" type="number" value={eva_assign} onChange={(e) => setEva_assign(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="eva_exper" type="number"   value={eva_exper} onChange={(e) => setEva_exper(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="eva_final" type="number" value={eva_final} onChange={(e) => setEva_final(e.target.value)} className='form-input form-control'/></td>
+                     <td><input required name="eva_fest" type="number" value={eva_fest} onChange={(e) => setEva_fest(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="eva_assign" type="number" value={eva_assign} onChange={(e) => setEva_assign(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="eva_exper" type="number"   value={eva_exper} onChange={(e) => setEva_exper(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="eva_final" type="number" value={eva_final} onChange={(e) => setEva_final(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Create</th>
                  
-                     <td><input required name="c_fest" type="number"  value={c_fest} onChange={(e) => setC_fest(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="c_assign" type="number" value={c_assign} onChange={(e) => setC_assign(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="c_exper" type="number" value={c_exper} onChange={(e) => setC_exper(e.target.value)} className='form-input form-control'/></td>
-                     <td><input required name="c_final" type="number" value={c_final} onChange={(e) => setC_final(e.target.value)} className='form-input form-control'/></td>
+                     <td><input required name="c_fest" type="number"  value={c_fest} onChange={(e) => setC_fest(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="c_assign" type="number" value={c_assign} onChange={(e) => setC_assign(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="c_exper" type="number" value={c_exper} onChange={(e) => setC_exper(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                     <td><input required name="c_final" type="number" value={c_final} onChange={(e) => setC_final(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
                 </tr>
                 <tr >
                      <th >Total</th>
@@ -240,17 +240,19 @@ const CourseAssessmentTable = () => {
             
             </tbody>
         </table>
-        <button type='submit' className='btn btn-success mb-5' >Save</button>
+        {accessId === '0' &&
+          <button type='submit' className='btn btn-success mb-5' >Save</button>
+        }
         </form>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to = {`/outline/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to = {`/outline/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
-              <Link to={`/bookreference/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/bookreference/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='form-btn btn'>Next</button>
               </Link>
               

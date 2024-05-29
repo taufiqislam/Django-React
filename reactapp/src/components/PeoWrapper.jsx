@@ -13,7 +13,7 @@ uuidv4()
 export const PeoWrapper = () => {
 
     const [peos, setPeos] = useState([]);
-    const { curriculumId, syllabusId } = useParams();
+    const { accessId, curriculumId, syllabusId } = useParams();
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     useEffect(() => {
@@ -95,13 +95,14 @@ export const PeoWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
-        <PeoForm addPeo={addPeo}/>
+        {accessId === '0' && <PeoForm addPeo={addPeo}/> }
+        
         <table className='table table-bordered table-hover text-center border-dark'>
           <thead>
             <tr>
               <th>PEO ID</th>
               <th>PEO Description</th>
-              <th></th>
+              {accessId === '0' && <th></th>}
             </tr>
           </thead>
           <tbody>
@@ -110,7 +111,7 @@ export const PeoWrapper = () => {
               peo.isEditing ? (
                 <EditPeoForm editPeo={editDescription} descriptionPEO={peo}/>
               ) : (
-                <Peo descriptionPEO={peo} key={peo.id} index={index} deletePeo={deletePeo} editPeo={editPeo}/>
+                <Peo descriptionPEO={peo} key={peo.id} index={index} deletePeo={deletePeo} editPeo={editPeo} accessId={accessId}/>
                 )))
                 
             }
@@ -118,14 +119,14 @@ export const PeoWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/syllabus/${curriculumId}`}>
+              <Link to={`/syllabus/${accessId}/${curriculumId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/peomapmission/${curriculumId}/${syllabusId}` : '#'}
+                  to={isComplete() ? `/peomapmission/${accessId}/${curriculumId}/${syllabusId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

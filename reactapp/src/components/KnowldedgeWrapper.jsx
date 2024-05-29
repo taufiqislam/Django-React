@@ -10,7 +10,7 @@ uuidv4()
 
 export const KnowledgeWrapper = (props) => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const { knowledges, setKnowledges } = props;
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/knowledge/?upCourse=${courseId}`)
@@ -88,13 +88,17 @@ export const KnowledgeWrapper = (props) => {
     
   return (
     <div className='Wrapper'>
-        <KnowledgeForm addKnowledge={addKnowledge}/>
+        {accessId === '0' &&
+          <KnowledgeForm addKnowledge={addKnowledge}/>
+        }
         <table className='table table-bordered table-hover border-dark text-center'>
           <thead>
             <tr>
               <th>ILO ID</th>
               <th>ILO Description</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -103,7 +107,7 @@ export const KnowledgeWrapper = (props) => {
               knowledge.isEditing ? (
                 <EditKnowledgeForm editKnowledge={editDescriptionKnowledge} description={knowledge}/>
               ) : (
-                <Knowledge description={knowledge} key={knowledge.id} index={index} deleteKnowledge={deleteKnowledge} editKnowledge={editKnowledge}/>
+                <Knowledge description={knowledge} key={knowledge.id} index={index} deleteKnowledge={deleteKnowledge} editKnowledge={editKnowledge} accessId={accessId}/>
                 )))
                 
             }

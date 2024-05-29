@@ -4,11 +4,12 @@ import {v4 as uuidv4} from 'uuid'
 import { Vision } from './Vision'
 import { EditVisionForm } from './EditVisionForm';
 import logo from './logos/JU_logo2.png';
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import axios from 'axios';
 uuidv4()
 
 export const VisionWrapper = () => {
+  const { accessId } = useParams();
     const [visions, setVisions] = useState([])
 
     useEffect(() => {
@@ -86,13 +87,14 @@ export const VisionWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
-        <VisionForm addVision={addVision}/>
+        {accessId === '0' && <VisionForm addVision={addVision}/>}
+        
         <table className='table table-bordered text-center border-dark'>
           <thead>
             <tr>
               <th>Vision ID</th>
               <th>Vision Description</th>
-              <th></th>
+              {accessId === '0' && <th></th>}
             </tr>
           </thead>
           <tbody>
@@ -101,7 +103,7 @@ export const VisionWrapper = () => {
               vision.isEditing ? (
                 <EditVisionForm editVision={editDescription} description={vision}/>
               ) : (
-                <Vision description={vision} key={vision.id} index={index} deleteVision={deleteVision} editVision={editVision}/>
+                <Vision description={vision} key={vision.id} index={index} deleteVision={deleteVision} editVision={editVision} accessId={accessId}/>
                 )))
                 
             }
@@ -109,14 +111,14 @@ export const VisionWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to='/vision'>
+              <Link to={`/mission/${accessId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                    to={isComplete() ? '/curriculum' : '#'}
+                    to={isComplete() ? `/curriculum/${accessId}` : '#'}
                     onClick={(e) => {
                         if (!isComplete()) {
                             e.preventDefault();

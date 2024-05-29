@@ -11,11 +11,19 @@ function Home(props) {
         <Container fluid="true">
             <Container fluid="true" className="backImg text-center">
                 <div className="overlay">
-                    <div className="content">
-                        <h4 className='title'>WELCOME TO OUR OBE-COURSE CURRICULUM SYSTEM</h4>
-                        <Link to='/mission' onClick={() => setShowHome(true)}>
-                            <Button className='tabMission btn-secondary'>GO</Button>
+                    <div className="content " >
+                        <h4 className='title pb-3'>WELCOME TO OUR OBE-COURSE CURRICULUM SYSTEM</h4>
+                        <div className='pb-3'>                        
+                        <Link to='/mission/0' className='p-3'>
+                            <Button className='tabMission btn-secondary'>Admin</Button>
                         </Link>
+                        </div>
+                        <div>
+                        <Link to='/mission/1' className='p-3'>
+                            <Button className='tabMission btn-secondary'>Teacher</Button>
+                        </Link>
+                        </div>
+
                     </div>
                 </div>
             </Container>

@@ -12,7 +12,7 @@ uuidv4()
 
 export const CloWrapper = () => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const [clos, setClos] = useState([]);
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
@@ -113,14 +113,18 @@ export const CloWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
+        {accessId === '0' &&
         <CloForm addClo={addClo}/>
+        }
         <table className='table table-bordered text-center table-hover border-dark'>
           <thead>
             <tr>
               <th>CLO ID</th>
               <th>CLO Description</th>
               <th>Knowledge Level</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -129,7 +133,7 @@ export const CloWrapper = () => {
               clo.isEditing ? (
                 <EditCloForm editClo={editDescriptionClo} descriptionCLO={clo}/>
               ) : (
-                <Clo descriptionCLO={clo} key={clo.id} index={index} deleteClo={deleteClo} editClo={editClo}/>
+                <Clo descriptionCLO={clo} key={clo.id} index={index} deleteClo={deleteClo} editClo={editClo} accessId={accessId}/>
                 )))
                 
             }
@@ -137,14 +141,14 @@ export const CloWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/courseobjective/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/courseobjective/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/clomapplo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                  to={isComplete() ? `/clomapplo/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

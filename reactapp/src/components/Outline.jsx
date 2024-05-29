@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPenToSquare} from '@fortawesome/free-solid-svg-icons'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 
-export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,selectedCLOs, selectedKnows,selectedAtts,selectedSkills ,index,deleteoutline,editOutline }) => {
+export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,selectedCLOs, selectedKnows,selectedAtts,selectedSkills ,index,deleteoutline,editOutline, accessId }) => {
   const getCLOIndex = (cloId) => {
     console.log(allClos)
     const index = allClos.findIndex(clo => clo.id === cloId);
@@ -54,8 +54,13 @@ export const Outline = ({ description, allClos, allKnows,allAtts,allSkills ,sele
         <td  colSpan={2}>{description.nonfaceToface}</td>
         <td colSpan={4} >{description.ilearn}</td>
         <td colSpan={2} >{description.totalSlt}</td>
-        <FontAwesomeIcon icon={faTrash} onClick={() => deleteoutline(description.id)}/>
-        <FontAwesomeIcon icon={faPenToSquare} onClick={() => editOutline(description.id)}/>
+        {accessId === '0' &&
+        <td>
+          <FontAwesomeIcon icon={faTrash} onClick={() => deleteoutline(description.id)}/> 
+          <FontAwesomeIcon icon={faPenToSquare} onClick={() => editOutline(description.id)}/>
+        </td>
+        }
+        
       </tr>
     </>
   );

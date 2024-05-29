@@ -10,7 +10,7 @@ uuidv4()
 
 export const AttitudeWrapper = (props) => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const {attitudes, setAttitudes} = props;
   const {upCourses} = useContext(DataContext);
   useEffect(() => {
@@ -90,13 +90,17 @@ export const AttitudeWrapper = (props) => {
     
   return (
     <div className='Wrapper'>
+        {accessId === '0' &&
         <AttitudeForm addAttitude={addAttitude}/>
+        }
         <table className='table table-bordered text-center table-hover border-dark'>
           <thead>
             <tr>
               <th>ILO ID</th>
               <th>ILO Description</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -105,7 +109,7 @@ export const AttitudeWrapper = (props) => {
               attitude.isEditing ? (
                 <EditAttitudeForm editAttitude={editDescriptionAttitude} description={attitude}/>
               ) : (
-                <Attitude description={attitude} key={attitude.id} index={index} deleteAttitude={deleteAttitude} editAttitude={editAttitude}/>
+                <Attitude description={attitude} key={attitude.id} index={index} deleteAttitude={deleteAttitude} editAttitude={editAttitude} accessId={accessId}/>
                 )))
                 
             }

@@ -5,7 +5,7 @@ import DataContext from './Context/DataContext';
 import logo from './logos/JU_logo2.png';
 export const CourseInfoForm = () => {
   
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   const {upCourses} = useContext(DataContext);
@@ -14,7 +14,7 @@ export const CourseInfoForm = () => {
   const [title,setTitle]=useState("")
   const [credit,setCredit]=useState("")
   const [prerequisites,setPrerequisites]=useState("")
-  const [type,setType]=useState("")
+  const [type,setType]=useState("Theory")
   const [contact_hours,setContactHours]=useState("")
   const [total_lectures,setTotalLectures]=useState("")
   const [class_tests,setClassTests]=useState("")
@@ -57,33 +57,54 @@ export const CourseInfoForm = () => {
       }
   }, [courseId]);
 
+  useEffect(() => {
+    if (courseId) {
+      axios.get(`http://127.0.0.1:8000/api/course/${courseId}/`)
+        .then((res) => {
+          if (res.status === 200) {
+            const course = res.data;
+            setCourseCode(course.code || ""); // Ensure course.code exists
+            setTitle(course.title || ""); // Ensure course.title exists
+          } else {
+            console.error(`Failed to fetch data from the server, status code: ${res.status}`);
+          }
+        })
+        .catch((error) => {
+          console.error(`Something went wrong: ${error}`);
+        });
+    }
+  }, [courseId]);
+  
+
   const handleSubmit = async (e) => {
 
-    const requestData = {
-    upCourse : courseId,
-    course_code: upCourses.code,
-    credit: credit,
-    title: upCourses.title,
-    prerequisites: prerequisites,
-    type: type,
-    contact_hours: contact_hours,
-    total_lectures: total_lectures,
-    class_tests: class_tests,
-    final_exam: final_exam,
-    faculty: faculty,
-    rationale: rationale,
-      isEditing: false
-    };
     e.preventDefault();
+    const requestData = {
+      upCourse: courseId,
+      course_code: course_code,
+      credit: credit,
+      title: title,
+      prerequisites: prerequisites || null,
+      type: type,
+      contact_hours: Number(contact_hours),
+      total_lectures: Number(total_lectures),
+      class_tests: Number(class_tests),
+      final_exam: Number(final_exam),
+      faculty: faculty,
+      rationale: rationale
+    };
+    console.log(requestData);
 
     try {
       if (isUpdating) {
 
         const response = await axios.put(`http://127.0.0.1:8000/api/courseinfo/${courseInfos.id}/`, requestData);
+        setCourseInfos(response.data);
         console.log('Update Response:', response.data);
       } else {
 
         const response = await axios.post('http://127.0.0.1:8000/api/courseinfo/', requestData);
+        setCourseInfos(response.data);
         console.log('Create Response:', response.data);
         setIsUpdating(true); 
       }
@@ -128,27 +149,27 @@ export const CourseInfoForm = () => {
           <div className='row'>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Course Code: </label>
-              <input name='course_code' type="text" className='form-input form-control' value={upCourses.code} readOnly required/>
+              <input name='course_code' type="text" className='form-input form-control' value={course_code} readOnly required/>
             </div>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Credit: </label>
-              <input name='credit' type="text" className='form-input form-control' value={credit} onChange={(e) => setCredit(e.target.value)} required/>
+              <input name='credit' type="number" className='form-input form-control' value={credit} onChange={(e) => setCredit(e.target.value)} readOnly={accessId === '1'} required/>
             </div>
           </div>
           <div className='row'>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Title: </label>
-              <input name='title' type="text" className='form-input form-control' value={upCourses.title} readOnly required/>
+              <input name='title' type="text" className='form-input form-control' value={title} readOnly required/>
             </div>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Prerequisites: </label>
-              <input name='prerequisites' type="text" className='form-input form-control' value={prerequisites}  onChange={(e) => setPrerequisites(e.target.value)}/>
+              <input name='prerequisites' type="text" className='form-input form-control' value={prerequisites}  onChange={(e) => setPrerequisites(e.target.value)} readOnly={accessId === '1'}/>
             </div>
           </div>
           <div className='row'>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Type: </label>
-              <select name='type' className='form-input form-control' value={type} onChange={(e) => setType(e.target.value)} required>
+              <select name='type' className='form-input form-control' value={type} onChange={(e) => setType(e.target.value)} readOnly={accessId === '1'} required>
                 <option value="Theory">Theory</option>
                 <option value="Lab">Lab</option>
                 <option value="Project">Project</option>
@@ -156,46 +177,48 @@ export const CourseInfoForm = () => {
             </div>
             <div className='col-md-6'>
               <label htmlFor="" className='form-label input-label'>Contact Hours: </label>
-              <input name='contact_hours' type="number" className='form-input form-control' value={contact_hours} onChange={(e) => setContactHours(e.target.value)}  required/>
+              <input name='contact_hours' type="number" className='form-input form-control' value={contact_hours} onChange={(e) => setContactHours(e.target.value)} readOnly={accessId === '1'} required/>
             </div>
           </div>
           <div className='row'>
             <div className='col-md-4'>
               <label htmlFor="" className='form-label input-label'>Total Lectures: </label>
-              <input name='total_lectures' type="number" className='form-input form-control' value={total_lectures} onChange={(e) => setTotalLectures(e.target.value)} required/>
+              <input name='total_lectures' type="number" className='form-input form-control' value={total_lectures} onChange={(e) => setTotalLectures(e.target.value)} readOnly={accessId === '1'} required/>
             </div>
             <div className='col-md-4'>
               <label htmlFor="" className='form-label input-label'>No. of Class Test: </label>
-              <input name='class_tests' type="number" className='form-input form-control'  value={class_tests} onChange={(e) => setClassTests(e.target.value)} required/>
+              <input name='class_tests' type="number" className='form-input form-control'  value={class_tests} onChange={(e) => setClassTests(e.target.value)} readOnly={accessId === '1'} required/>
             </div>
             <div className='col-md-4'>
               <label htmlFor="" className='form-label input-label'>Final Examination: </label>
-              <input name='final_exam' type="number" className='form-input form-control' value={final_exam} onChange={(e) => setFinalExam(e.target.value)} required/>
+              <input name='final_exam' type="number" className='form-input form-control' value={final_exam} onChange={(e) => setFinalExam(e.target.value)} readOnly={accessId === '1'} required/>
             </div>
           </div>
           
           <div>
             <label htmlFor="" className='form-label input-label'>Faculty: </label>
-            <input name='faculty' type="text" className='form-input form-control'   value={faculty } onChange={(e) => setFaculty(e.target.value)} required/>
+            <input name='faculty' type="text" className='form-input form-control'   value={faculty } onChange={(e) => setFaculty(e.target.value)} readOnly={accessId === '1'} required/>
           </div>
           <div>
             <label htmlfor="" className='form-label input-label'>Rationale:</label>
-            <textarea name='rationale' class="form-input form-control" rows="3" value={rationale }onChange={(e) => setRationale(e.target.value)} required></textarea>
+            <textarea name='rationale' class="form-input form-control" rows="3" value={rationale }onChange={(e) => setRationale(e.target.value)} readOnly={accessId === '1'} required></textarea>
           </div>
+          {accessId === '0' &&
           <div className='form-group'>
             <button type='submit' className='btn btn-success mb-5' >Save</button>
           </div>
+          }
         </form>
         <div className='row form-group '>
             <div className='col-6 text-start'>
-              <Link to={`/course/${curriculumId}/${syllabusId}`}>
+              <Link to={`/course/${accessId}/${curriculumId}/${syllabusId}`}>
                 <button type='button' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/courseobjective/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                  to={isComplete() ? `/courseobjective/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

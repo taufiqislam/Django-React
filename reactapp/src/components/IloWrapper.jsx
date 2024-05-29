@@ -8,7 +8,7 @@ import DataContext from './Context/DataContext';
 
 export const IloWrapper = () => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const [knowledges, setKnowledges] = useState([]);
 
   const [skills, setSkills] = useState([]);
@@ -38,19 +38,19 @@ export const IloWrapper = () => {
           </div>
         </div>
           <KnowledgeWrapper knowledges={knowledges} setKnowledges={setKnowledges}/>
-          <SkillWrapper skills={skills} setSkills={setSkills}/>
-          <AttitudeWrapper attitudes={attitudes} setAttitudes={setAttitudes}/>
+          <SkillWrapper skills={skills} setSkills={setSkills} />
+          <AttitudeWrapper attitudes={attitudes} setAttitudes={setAttitudes} />
         
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/clomapplo/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/clomapplo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/outline/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                  to={isComplete() ? `/outline/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

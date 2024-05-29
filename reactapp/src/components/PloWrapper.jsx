@@ -13,7 +13,7 @@ uuidv4()
 export const PloWrapper = () => {
 
     const [plos, setPlos] = useState([]);
-    const { curriculumId, syllabusId } = useParams();
+    const { accessId, curriculumId, syllabusId } = useParams();
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
     useEffect(() => {
@@ -94,13 +94,17 @@ export const PloWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
-        <PloForm addPlo={addPlo}/>
+        {accessId === '0' &&
+          <PloForm addPlo={addPlo}/>
+        }
         <table className='table table-bordered table-hover text-center border-dark'>
           <thead>
             <tr>
               <th>plo ID</th>
               <th>plo Description</th>
-              <th></th>
+              {accessId === '0' &&
+                <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -109,7 +113,7 @@ export const PloWrapper = () => {
               plo.isEditing ? (
                 <EditPloForm editPlo={editDescription} descriptionPLO={plo}/>
               ) : (
-                <Plo descriptionPLO={plo} key={plo.id} index={index} deletePlo={deletePlo} editPlo={editPlo}/>
+                <Plo descriptionPLO={plo} key={plo.id} index={index} deletePlo={deletePlo} editPlo={editPlo} accessId={accessId}/>
                 )))
                 
             }
@@ -117,14 +121,14 @@ export const PloWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/peomapmission/${curriculumId}/${syllabusId}`}>
+              <Link to={`/peomapmission/${accessId}/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                    to={isComplete() ? `/plomappeo/${curriculumId}/${syllabusId}` : '#'}
+                    to={isComplete() ? `/plomappeo/${accessId}/${curriculumId}/${syllabusId}` : '#'}
                     onClick={(e) => {
                         if (!isComplete()) {
                             e.preventDefault();

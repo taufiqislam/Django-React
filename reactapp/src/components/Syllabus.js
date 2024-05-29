@@ -12,7 +12,7 @@ import DataContext from './Context/DataContext';
 import axios from 'axios';
 
 function Syllabus(props) {
-    const { curriculumId } = useParams();
+    const { accessId ,curriculumId } = useParams();
     const {upCurriculums,setUpCurriculums} = useContext(DataContext);
     const {upSyllabuses,setUpSyllabuses} = useContext(DataContext);
     const [startingSession, setStartingSession] = useState('');
@@ -141,94 +141,98 @@ function Syllabus(props) {
                         <img src={logo} alt="Logo" />
                     </div>
                 </div>
-                <Row>
-                    <Col>
-                        <div>
-                            <label className="pe-5 pb-2 input-label" htmlFor="">Program: </label> <input
-                            name="pg"
-                            className="form-check-input"
-                            id="pg1"
-                            type="radio"
-                            value="bsc"
-                            onChange={programHandle}
-                            checked={program==="bsc"}
-                            />
-                            <label className="pe-5 pb-2" htmlFor="pg1">B.SC </label>
-                            <input
-                                className="form-check-input"
+                {accessId === '0' &&
+                    <Row>
+                        <Col>
+                            <div>
+                                <label className="pe-5 pb-2 input-label" htmlFor="">Program: </label> <input
                                 name="pg"
-                                id="pg2"
+                                className="form-check-input"
+                                id="pg1"
                                 type="radio"
-                                value="msc"
+                                value="bsc"
                                 onChange={programHandle}
-                                checked={program==="msc"}
-                            />
-                            <label className="pe-5 pb-2" htmlFor="pg2"> M.SC</label>
-                        </div>
-                        <div>
-                            <label className="pe-5 pb-2 input-label" htmlFor="">System    :</label>
-                            <input
-                            className="form-check-input"
-                            name="sys"
-                            id="sys1"
-                            type="radio"
-                            value="semester"
-                            onChange={handleChange}
-                            checked={selectedOption==="semester"}
-                            />
-                            <label className="pe-5 pb-2" htmlFor="sys1">Semester</label>
-                            <input
+                                checked={program==="bsc"}
+                                />
+                                <label className="pe-5 pb-2" htmlFor="pg1">B.SC </label>
+                                <input
+                                    className="form-check-input"
+                                    name="pg"
+                                    id="pg2"
+                                    type="radio"
+                                    value="msc"
+                                    onChange={programHandle}
+                                    checked={program==="msc"}
+                                />
+                                <label className="pe-5 pb-2" htmlFor="pg2"> M.SC</label>
+                            </div>
+                            <div>
+                                <label className="pe-5 pb-2 input-label" htmlFor="">System    :</label>
+                                <input
                                 className="form-check-input"
                                 name="sys"
-                                id="sys2"
+                                id="sys1"
                                 type="radio"
-                                value="year"
+                                value="semester"
                                 onChange={handleChange}
-                                checked={selectedOption==="year"}
-                            />
-                            <label className="pe-5 pb-2" htmlFor="sys2">Year</label>
-                        </div>
-                        <div>
-                            <label htmlFor="" className='input-label'>Starting Session</label>
-                            <Form.Select onChange={sessionHandle} value={session} >
-                                <option value="">choose session</option>
-                                {sessionOptions.map((session) => (
-                                    <option key={session} value={session}>{session}</option>
-                                ))}
-                            </Form.Select>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    {
-                        (selectedOption !== "" && program !== "" && session !== "") ? (
-                            selectedOption==="year" ?(
-                                <Fragment>
-                                    <Col md={6} lg={6} sm={6} className="p-0 m-0">
-                                        <BscYear yearChange={yearChange} yearValue={yearValue}/>
-                                    </Col>
-                                    <Col md={6} lg={6} sm={6} className="p-0 m-0"> </Col>
-                                    
-                                    <Button className="form-btn btn" onClick={addSyllabus}>Add</Button>
-                                </Fragment>
-                            )  : (
-                                <Fragment>
-                                    <Col md={6} lg={6} sm={6} className="p-0 m-0">
-                                        <BscYear yearChange={yearChange} yearValue={yearValue} />
-                                    </Col>
-                                    <Col md={6} lg={6} sm={6} className="p-0 m-0">
-                                        <BscSemester semesterValue={semesterValue} semesterChange={semesterChange} />
-                                    </Col>
-                                    <Button className="form-btn btn" onClick={addSyllabus}>Add</Button>
-                                </Fragment>
+                                checked={selectedOption==="semester"}
+                                />
+                                <label className="pe-5 pb-2" htmlFor="sys1">Semester</label>
+                                <input
+                                    className="form-check-input"
+                                    name="sys"
+                                    id="sys2"
+                                    type="radio"
+                                    value="year"
+                                    onChange={handleChange}
+                                    checked={selectedOption==="year"}
+                                />
+                                <label className="pe-5 pb-2" htmlFor="sys2">Year</label>
+                            </div>
+                            <div>
+                                <label htmlFor="" className='input-label'>Starting Session</label>
+                                <Form.Select onChange={sessionHandle} value={session} >
+                                    <option value="">choose session</option>
+                                    {sessionOptions.map((session) => (
+                                        <option key={session} value={session}>{session}</option>
+                                    ))}
+                                </Form.Select>
+                            </div>
+                        </Col>
+                    </Row>
+                }
+                {accessId === '0' &&
+                    <Row>
+                        {
+                            (selectedOption !== "" && program !== "" && session !== "") ? (
+                                selectedOption==="year" ?(
+                                    <Fragment>
+                                        <Col md={6} lg={6} sm={6} className="p-0 m-0">
+                                            <BscYear yearChange={yearChange} yearValue={yearValue}/>
+                                        </Col>
+                                        <Col md={6} lg={6} sm={6} className="p-0 m-0"> </Col>
+                                        
+                                        <Button className="form-btn btn" onClick={addSyllabus}>Add</Button>
+                                    </Fragment>
+                                )  : (
+                                    <Fragment>
+                                        <Col md={6} lg={6} sm={6} className="p-0 m-0">
+                                            <BscYear yearChange={yearChange} yearValue={yearValue} />
+                                        </Col>
+                                        <Col md={6} lg={6} sm={6} className="p-0 m-0">
+                                            <BscSemester semesterValue={semesterValue} semesterChange={semesterChange} />
+                                        </Col>
+                                        <Button className="form-btn btn" onClick={addSyllabus}>Add</Button>
+                                    </Fragment>
+                                )
+                            ) : (
+                                <Col>
+                                    <p>Please select all options.</p>
+                                </Col>
                             )
-                        ) : (
-                            <Col>
-                                <p>Please select all options.</p>
-                            </Col>
-                        )
-                    }
-                </Row>
+                        }
+                    </Row>
+                }
                 <Row className='pt-5'>
                     <table className='table table-bordered text-center table-hover border-dark'>
                     <thead>
@@ -238,41 +242,42 @@ function Syllabus(props) {
                             <th>Starting Session</th>
                             <th>Year</th>
                             <th>Semester</th>
-                            <th>Delete</th>
+                            {accessId === '0' && <th>Delete</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {syllabuses.map((syllabus, index) => (
                                 <tr key={index} className='nav-item'>
                                     <td>
-                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
+                                        <Link to={`/peo/${accessId}/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.program}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
+                                        <Link to={`/peo/${accessId}/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.selectedOption}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
+                                        <Link to={`/peo/${accessId}/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.session}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
+                                        <Link to={`/peo/${accessId}/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.yearValue}</span>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/peo/${curriculumId}/${syllabus.id}`} className='nav-link' >
+                                        <Link to={`/peo/${accessId}/${curriculumId}/${syllabus.id}`} className='nav-link' >
                                             <span>{syllabus.semesterValue}</span>
                                         </Link>
                                     </td>
-                                    <td>
-                                        <FontAwesomeIcon icon={faTrash} onClick={()=>deleteSyllabus(syllabus.id)}/>
-                                    </td>
-                                    
+                                    {accessId === '0' &&
+                                        <td>
+                                            <FontAwesomeIcon icon={faTrash} onClick={()=>deleteSyllabus(syllabus.id)}/>
+                                        </td>
+                                    }
                                 </tr>
                             ))
                             
@@ -282,7 +287,7 @@ function Syllabus(props) {
                 </Row>
                 <div className='row'>
                     <div className='text-start'>
-                    <Link to='/curriculum'>
+                    <Link to={`/curriculum/${accessId}`}>
                         <button type='submit' className='btn btn-warning'>Back</button>
                     </Link>
                     

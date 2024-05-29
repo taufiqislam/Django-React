@@ -9,7 +9,7 @@ import axios  from 'axios';
 uuidv4()
 
 export const SkillWrapper = (props) => {
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const {skills, setSkills} = props;
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/skill/?upCourse=${courseId}`)
@@ -85,13 +85,17 @@ export const SkillWrapper = (props) => {
 };
   return (
     <div className='Wrapper'>
+        {accessId === '0' &&
         <SkillForm addSkill={addSkill}/>
+        }
         <table className='table table-bordered text-center table-hover border-dark'>
           <thead>
             <tr>
               <th>ILO ID</th>
               <th>ILO Description</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -100,7 +104,7 @@ export const SkillWrapper = (props) => {
               skill.isEditing ? (
                 <EditSkillForm editSkill={editDescriptionSkill} description={skill}/>
               ) : (
-                <Skill description={skill} key={skill.id} index={index} deleteSkill={deleteSkill} editSkill={editSkill}/>
+                <Skill description={skill} key={skill.id} index={index} deleteSkill={deleteSkill} editSkill={editSkill} accessId={accessId}/>
                 )))
                 
             }

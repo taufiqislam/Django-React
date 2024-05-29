@@ -5,7 +5,7 @@ import axios from 'axios';
 import DataContext from './Context/DataContext';
 export const CloMapPloTable = () => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const [clos, setClos] = useState([]);
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
@@ -143,11 +143,7 @@ const handleSave = async () => {
         
         <table className='table table-bordered table-hover border-dark text-center align-middle'>
             <thead>
-                <tr>
-                    <th colSpan={2}>1st Year 1st Semester</th>
-                    <th>Course Code: CSE 155</th>
-                    <th colSpan={plos.length+2}>Course Title: Data Structures</th>
-                </tr>
+                
                 <tr>
                     <th>CLOs</th>
                     <th>CLO Description</th>
@@ -169,6 +165,7 @@ const handleSave = async () => {
                         {
                             plos.map((plo,ploIndex)=>(
                                 <td>
+                                  {accessId === '0' &&
                                   <select
                                     name="mapping"
                                     id="mapping"
@@ -181,6 +178,10 @@ const handleSave = async () => {
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                   </select>
+                                  }
+                                  {accessId === '1' &&
+                                    localMapping[`${clo.id}-${plo.id}`]
+                                  }
                                 </td>
                             ))
                         }
@@ -192,17 +193,19 @@ const handleSave = async () => {
                 </tr>
             </tbody>
         </table>
+        {accessId === '0' &&
         <button type='button' className='btn btn-success mb-5' onClick={handleSave}>Save</button>
+        }
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/clo/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/clo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? `/ilo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                to={(isComplete() && savedMapping) ? `/ilo/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

@@ -61,24 +61,24 @@ function Main() {
                     <Row className="fixMargin">
                         <Routes>
                             <Route path='/' element={<HomePage />} />
-                            <Route path='/mission' element={<MissionWrapper />} />
-                            <Route path='/vision' element={<VisionPage />} />
-                            <Route path='/curriculum' element={<CurriculumPage />} />
-                            <Route path='/syllabus/:curriculumId' element={<SyllabusPage />} />
-                            <Route path='peo/:curriculumId/:syllabusId' element={<PeoPage />} />
-                            <Route path='plo/:curriculumId/:syllabusId' element={<PloPage />} />
-                            <Route path='peomapmission/:curriculumId/:syllabusId' element={<PeoMapMissionPage />} />
-                            <Route path='plomappeo/:curriculumId/:syllabusId' element={<PloMapPeoPage />} />
-                            <Route path='course/:curriculumId/:syllabusId' element={<CoursePage />} />
-                            <Route path='clomapplo/:curriculumId/:syllabusId/:courseId' element={<CloMapPloPage />} />
-                            <Route path='cloPloReasoning/:curriculumId/:syllabusId/:courseId' element={<CloPloRePage />} />
-                            <Route path='clo/:curriculumId/:syllabusId/:courseId' element={<CloPage />} />
-                            <Route path='bookreference/:curriculumId/:syllabusId/:courseId' element={<BookReferencePage />} />
-                            <Route path='courseobjective/:curriculumId/:syllabusId/:courseId' element={<CourseObjectivePage />} />
-                            <Route path='courseassessment/:curriculumId/:syllabusId/:courseId' element={<CourseAssessmentPage />} />
-                            <Route path='ilo/:curriculumId/:syllabusId/:courseId' element={<IloPage />} />
-                            <Route path='courseinfo/:curriculumId/:syllabusId/:courseId' element={<CourseInfoPage />} />
-                            <Route path='outline/:curriculumId/:syllabusId/:courseId' element={<OutlineTablePage />} />
+                            <Route path='/mission/:accessId' element={<MissionWrapper />} />
+                            <Route path='/vision/:accessId' element={<VisionPage />} />
+                            <Route path='/curriculum/:accessId' element={<CurriculumPage />} />
+                            <Route path='/syllabus/:accessId/:curriculumId' element={<SyllabusPage />} />
+                            <Route path='peo/:accessId/:curriculumId/:syllabusId' element={<PeoPage />} />
+                            <Route path='plo/:accessId/:curriculumId/:syllabusId' element={<PloPage />} />
+                            <Route path='peomapmission/:accessId/:curriculumId/:syllabusId' element={<PeoMapMissionPage />} />
+                            <Route path='plomappeo/:accessId/:curriculumId/:syllabusId' element={<PloMapPeoPage />} />
+                            <Route path='course/:accessId/:curriculumId/:syllabusId' element={<CoursePage />} />
+                            <Route path='clomapplo/:accessId/:curriculumId/:syllabusId/:courseId' element={<CloMapPloPage />} />
+                            <Route path='cloPloReasoning/:accessId/:curriculumId/:syllabusId/:courseId' element={<CloPloRePage />} />
+                            <Route path='clo/:accessId/:curriculumId/:syllabusId/:courseId' element={<CloPage />} />
+                            <Route path='bookreference/:accessId/:curriculumId/:syllabusId/:courseId' element={<BookReferencePage />} />
+                            <Route path='courseobjective/:accessId/:curriculumId/:syllabusId/:courseId' element={<CourseObjectivePage />} />
+                            <Route path='courseassessment/:accessId/:curriculumId/:syllabusId/:courseId' element={<CourseAssessmentPage />} />
+                            <Route path='ilo/:accessId/:curriculumId/:syllabusId/:courseId' element={<IloPage />} />
+                            <Route path='courseinfo/:accessId/:curriculumId/:syllabusId/:courseId' element={<CourseInfoPage />} />
+                            <Route path='outline/:accessId/:curriculumId/:syllabusId/:courseId' element={<OutlineTablePage />} />
                         </Routes>
                     </Row>
                 </Col>

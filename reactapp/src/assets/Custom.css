@@ -14,16 +14,16 @@
     margin-top: -20px;
 }
 .backImg{
-    width: 1004px;
-    height: 564px;
-    margin-left: -20px;
+    width: 1295px;
+    height: 705px;
+    margin-left: -100px;
     background-size: contain;
     background: url("../assets/Images/obeImg1.jpg") no-repeat center;
     padding: 0;
 }
 .overlay{
-    width: 1004px;
-    height: 564px;
+    width:1295px;
+    height: 705px;
     background-size: contain;
     background: rgba(0,0,0,0.5);
     padding: 0;

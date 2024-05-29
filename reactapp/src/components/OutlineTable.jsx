@@ -11,7 +11,7 @@ import EditOutline from './EditOutline';
 const OutlineTable = () => {
 
   
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
   const [outlinelast, setoutlinelast] = useState({});
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
@@ -321,7 +321,9 @@ const updateOutline = (id, heading, description, nonfaceToface, lecture, exercis
                 <img src={logo} alt="Logo" />
                 </div>
             </div>
+            {accessId === '0' &&
             <CourseContentOutline addOutline={addOutline}  />
+            }
             <table  className='table table-bordered text-center border-dark table-hover bg-dark'  >
                 <thead className="thead-dark">
                 <tr>
@@ -330,8 +332,9 @@ const updateOutline = (id, heading, description, nonfaceToface, lecture, exercis
                     <th colSpan={4} rowSpan={5}>CLO</th>
                     <th colSpan={4} rowSpan={5}>ILO</th>
                     <th colSpan={12}>Teaching and Learning Activities</th>
-                    <th rowSpan={5}></th>
-            
+                    {accessId === '0' &&
+                      <th rowSpan={5}></th>
+                    }
                     
                     
 
@@ -389,7 +392,9 @@ const updateOutline = (id, heading, description, nonfaceToface, lecture, exercis
                 sumN2F={sumN2F} // Pass sumN2F as a prop
                 sumSTL={sumSTL}
                 deleteoutline={deleteoutline}
-                editOutline={editOutline}                />
+                editOutline={editOutline}
+                accessId={accessId}                
+                />
 
          
 
@@ -427,24 +432,24 @@ const updateOutline = (id, heading, description, nonfaceToface, lecture, exercis
             <tbody>
               <tr>
                 <td>Attendance</td>
-                <td><input required name="attendanceP" type="number" value={attendanceP} onChange={(e) => setattendanceP(e.target.value)} className='form-input form-control' /></td>
+                <td><input required name="attendanceP" type="number" value={attendanceP} onChange={(e) => setattendanceP(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
                 <td></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr>
                 <td>Assignment/Tutorial</td>
-                <td><input required name="tutP" value={tutP} onChange={(e) => settutP(e.target.value)} type="number" className='form-input form-control' /></td>
-                <td><input required name="tutF2F" value={tutF2F} onChange={(e) => settutF2F(e.target.value)} type="number" className='form-input form-control' /></td>
-                <td><input required name="tutnF2F" value={tutnF2F} onChange={(e) => settutnF2F(e.target.value)} type="number" className='form-input form-control' /></td>
-                <td><input required name="tutStl" value={tutStl} onChange={(e) => settutStl(parseInt(e.target.value))} type="number" className='form-input form-control' /></td>
+                <td><input required name="tutP" value={tutP} onChange={(e) => settutP(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="tutF2F" value={tutF2F} onChange={(e) => settutF2F(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="tutnF2F" value={tutnF2F} onChange={(e) => settutnF2F(e.target.value)} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="tutStl" value={tutStl} onChange={(e) => settutStl(parseInt(e.target.value))} type="number" className='form-input form-control' readOnly={accessId === '1'}/></td>
               </tr>
               <tr>
                 <td>Final Exam</td>
-                <td><input required name="finalP" type="number" value={finalP} onChange={(e) => setfinalP(e.target.value)} className='form-input form-control' /></td>
-                <td><input required name="finalF2F" type="number" value={finalF2F} onChange={(e) => setFinalF2f(e.target.value)} className='form-input form-control' /></td>
-                <td><input required name="finalnF2F" type="number" value={finalnF2F} onChange={(e) => setfinalnF2F(e.target.value)} className='form-input form-control' /></td>
-                <td><input required name="finalstl" type="number" value={finalstl} onChange={(e) => setfinalstl(parseInt(e.target.value))} className='form-input form-control' /></td>
+                <td><input required name="finalP" type="number" value={finalP} onChange={(e) => setfinalP(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="finalF2F" type="number" value={finalF2F} onChange={(e) => setFinalF2f(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="finalnF2F" type="number" value={finalnF2F} onChange={(e) => setfinalnF2F(e.target.value)} className='form-input form-control' readOnly={accessId === '1'}/></td>
+                <td><input required name="finalstl" type="number" value={finalstl} onChange={(e) => setfinalstl(parseInt(e.target.value))} className='form-input form-control' readOnly={accessId === '1'}/></td>
               </tr>
               <tr>
                 <td colspan={3}></td>
@@ -453,19 +458,21 @@ const updateOutline = (id, heading, description, nonfaceToface, lecture, exercis
               </tr>
             </tbody>
           </table>
-          <button type='submit' className='btn btn-success mb-5'>Save</button>
+          {accessId === '0' &&
+            <button type='submit' className='btn btn-success mb-5'>Save</button>
+          }
         </form>
       </div>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/ilo/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/ilo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/courseassessment/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                  to={isComplete() ? `/courseassessment/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();

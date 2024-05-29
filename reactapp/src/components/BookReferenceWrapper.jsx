@@ -11,7 +11,7 @@ uuidv4()
 
 export const BookReferenceWrapper = () => {
 
-    const { curriculumId, syllabusId, courseId } = useParams();
+    const { accessId, curriculumId, syllabusId, courseId } = useParams();
     const [bookReferences, setBookReferences] = useState([]);
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
@@ -117,7 +117,9 @@ export const BookReferenceWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
+        {accessId === '0' &&
         <BookReferenceForm addBookReference={addBookReference}/>
+        }
         <table className='table table-bordered text-center table-hover border-dark'>
           <thead>
             <tr>
@@ -127,7 +129,9 @@ export const BookReferenceWrapper = () => {
               <th>Publisher</th>
               <th>Year</th>
               <th>Edition</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -136,7 +140,7 @@ export const BookReferenceWrapper = () => {
               bookReference.isEditing ? (
                 <EditBookReferenceForm editBookReference={editDescriptionBookReference} bookReference={bookReference}/>
               ) : (
-                <BookReference bookReference={bookReference} key={bookReference.id} index={index} deleteBookReference={deleteBookReference} editBookReference={editBookReference}/>
+                <BookReference bookReference={bookReference} key={bookReference.id} index={index} deleteBookReference={deleteBookReference} editBookReference={editBookReference} accessId={accessId}/>
                 )))
                 
             }
@@ -144,7 +148,7 @@ export const BookReferenceWrapper = () => {
         </table>
         <div className='row'>
             <div className='text-start'>
-              <Link to={`/courseassessment/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/courseassessment/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

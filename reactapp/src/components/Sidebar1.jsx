@@ -6,6 +6,7 @@ import DataContext from './Context/DataContext';
 export const Sidebar = () => {
     const location = useLocation();
     const { pathname } = location;
+    const [accessId, setAccessId] = useState(true);
     const [curriculumId, setCurriculumId] = useState(true);
     const [syllabusId, setSyllabusId] = useState(true);
     const [courseId, setCourseId] = useState(true);
@@ -17,29 +18,38 @@ export const Sidebar = () => {
 
     useEffect(() => {
         const pathParts = pathname.split('/').filter(Boolean);
-
         if (pathParts.length <= 1) {
+            setShowHome(false);
+            setShowSyllabuses(false);
+            setShowPrograms(false);
+            setShowCourses(false);
+        }
+        else if (pathParts.length === 2) {
+            setAccessId(parseInt(pathParts[1],10));
             setShowHome(true);
             setShowSyllabuses(false);
             setShowPrograms(false);
             setShowCourses(false);
-        } else if (pathParts.length === 2) {
-            setCurriculumId(parseInt(pathParts[1],10));
+        } else if (pathParts.length === 3) {
+            setAccessId(parseInt(pathParts[1],10));
+            setCurriculumId(parseInt(pathParts[2],10));
             setShowHome(false);
             setShowSyllabuses(true);
             setShowPrograms(false);
             setShowCourses(false);
-        } else if (pathParts.length === 3) {
-            setCurriculumId(parseInt(pathParts[1],10));
-            setSyllabusId(parseInt(pathParts[2],10));
+        } else if (pathParts.length === 4) {
+            setAccessId(parseInt(pathParts[1],10));
+            setCurriculumId(parseInt(pathParts[2],10));
+            setSyllabusId(parseInt(pathParts[3],10));
             setShowHome(false);
             setShowSyllabuses(false);
             setShowPrograms(true);
             setShowCourses(false);
-        } else if (pathParts.length === 4) {
-            setCurriculumId(parseInt(pathParts[1],10));
-            setSyllabusId(parseInt(pathParts[2],10));
-            setCourseId(parseInt(pathParts[3],10));
+        } else if (pathParts.length === 5) {
+            setAccessId(parseInt(pathParts[1],10));
+            setCurriculumId(parseInt(pathParts[2],10));
+            setSyllabusId(parseInt(pathParts[3],10));
+            setCourseId(parseInt(pathParts[4],10));
             setShowHome(false);
             setShowSyllabuses(false);
             setShowPrograms(false);
@@ -66,21 +76,21 @@ export const Sidebar = () => {
                 </li>
                 {showHome &&  (
                     <li className="nav-item">
-                    <Link to='/mission' className="nav-link" >
+                    <Link to={`/mission/${accessId}`} className="nav-link" >
                         <span>Mission</span>
                     </Link>
                     </li>
                 )}
                 {showHome && (
                     <li className="nav-item">
-                    <Link to='/vision' className="nav-link">
+                    <Link to={`/vision/${accessId}`} className="nav-link">
                         <span>Vision</span>
                     </Link>
                     </li>
                 )}
                 {showHome && (
                     <li className="nav-item">
-                    <Link to='/curriculum' class="nav-link">
+                    <Link to={`/curriculum/${accessId}`} class="nav-link">
                         <span>Curriculum</span>
                     </Link>
                     </li>
@@ -88,7 +98,7 @@ export const Sidebar = () => {
                 
                 {showSyllabuses && (
                     <li className="nav-item">
-                    <Link to={`/syllabus/${curriculumId}`} className="nav-link">
+                    <Link to={`/syllabus/${accessId}/${curriculumId}`} className="nav-link">
                         <span>Program</span>
                     </Link>
                     </li>
@@ -96,7 +106,7 @@ export const Sidebar = () => {
 
                 {showSyllabuses && (
                     <li className="nav-item">
-                    <Link to='/curriculum' class="nav-link">
+                    <Link to={`/curriculum/${accessId}/`} class="nav-link">
                         <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>
@@ -105,21 +115,21 @@ export const Sidebar = () => {
 
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to={`/peo/${curriculumId}/${syllabusId}`} className="nav-link">
+                    <Link to={`/peo/${accessId}/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Program Educational Objectives (PEO)</span>
                     </Link>
                     </li>
                 )}
                 {showPrograms && (
                      <li className="nav-item">
-                     <Link to={`/peomapmission/${curriculumId}/${syllabusId}`} className="nav-link">
+                     <Link to={`/peomapmission/${accessId}/${curriculumId}/${syllabusId}`} className="nav-link">
                          <span>Mapping Of PEO and Mission</span>
                      </Link>
                     </li>
                 )}
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to={`/plo/${curriculumId}/${syllabusId}`} className="nav-link">
+                    <Link to={`/plo/${accessId}/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Program Learning Outcomes (PLO)</span>
                     </Link>
                     </li>
@@ -127,14 +137,14 @@ export const Sidebar = () => {
 
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to={`/plomappeo/${curriculumId}/${syllabusId}`} className="nav-link">
+                    <Link to={`/plomappeo/${accessId}/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Mapping Of PLO and PEO</span>
                     </Link>
                     </li>
                 )}
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to={`/course/${curriculumId}/${syllabusId}`} className="nav-link">
+                    <Link to={`/course/${accessId}/${curriculumId}/${syllabusId}`} className="nav-link">
                         <span>Courses</span>
                     </Link>
                     </li>
@@ -142,7 +152,7 @@ export const Sidebar = () => {
 
                 {showPrograms && (
                     <li className="nav-item">
-                    <Link to={`/syllabus/${curriculumId}`} class="nav-link">
+                    <Link to={`/syllabus/${accessId}/${curriculumId}`} class="nav-link">
                         <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>
@@ -151,7 +161,7 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/courseinfo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Information</span>
                     </Link>
                     </li>
@@ -159,7 +169,7 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/courseobjective/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/courseobjective/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Objectives</span>
                     </Link>
                     </li>
@@ -167,7 +177,7 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/clo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/clo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Learning Outcomes (CLO)</span>
                     </Link>
                     </li>
@@ -175,7 +185,7 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/clomapplo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/clomapplo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                        <span>CLO-PLO Correlation Matrix</span>
                     </Link>
                     </li>
@@ -191,7 +201,7 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/ilo/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/ilo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Intended Learning Outcomes (ILO)</span>
                     </Link>
                     </li>
@@ -199,14 +209,14 @@ export const Sidebar = () => {
 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/outline/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/outline/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Content Outline</span>
                     </Link>
                     </li>
                 )}
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/courseassessment/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/courseassessment/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Course Assessment</span>
                     </Link>
                     </li>
@@ -215,7 +225,7 @@ export const Sidebar = () => {
                 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/bookreference/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
+                    <Link to={`/bookreference/${accessId}/${curriculumId}/${syllabusId}/${courseId}`} className="nav-link">
                         <span>Reference Books</span>
                     </Link>
                     </li>
@@ -223,7 +233,7 @@ export const Sidebar = () => {
                 
                 {showCourses && (
                     <li className="nav-item">
-                    <Link to={`/course/${curriculumId}/${syllabusId}`} class="nav-link">
+                    <Link to={`/course/${accessId}/${curriculumId}/${syllabusId}`} class="nav-link">
                         <button className='btn btn-warning'>Back</button>
                     </Link>
                     </li>

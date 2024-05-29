@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Form from 'react-bootstrap/Form';
 import logo from './logos/JU_logo2.png';
-import { Link } from 'react-router-dom';
+import { Link ,useParams} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import DataContext from './Context/DataContext';
 import axios from 'axios';
 
 export default function Curriculum() {
+    const { accessId } = useParams();
     const { upCurriculums, setUpCurriculums } = useContext(DataContext);
     const [curriculums, setCurriculums] = useState([]);
     const [inputdata, setInputdata] = useState({ starting: "", ending: "" });
@@ -102,62 +103,65 @@ export default function Curriculum() {
                     <img src={logo} alt="Logo" />
                 </div>
             </div>
-            <div className='ObeForm'>
-                <div className='row'>
-                    <div className='col-5 Drop'>
-                        <label htmlFor="dropdown" className='input-label'>Starting Session:</label>
-                        <Form.Select id="dropdown" value={inputdata.starting || ""} name="starting" autoComplete='off' onChange={data}>
-                            <option>Open this select menu</option>
-                            {sessions.map(session => (
-                                <option key={session} value={session}>{session}</option>
-                            ))}
-                        </Form.Select>
-                    </div>
-                    <div className='col-5'>
-                        <label htmlFor="dropdown" className='input-label'>Ending Session:</label>
-                        <Form.Select id="dropdown" value={inputdata.ending || ""} name="ending" autoComplete='off' onChange={data}>
-                            <option>Open this select menu</option>
-                            {filteredEndingSessions.map(session => (
-                                <option key={session} value={session}>{session}</option>
-                            ))}
-                        </Form.Select>
-                    </div>
-                    <div className='col-2'>
-                        <button className='form-btn btn pt-3 pb-3 px-5' onClick={!bolin ? addinputdata : updateinfo}>{!bolin ? `Add` : `Update data`}</button>
+            {accessId === '0' && 
+                <div className='ObeForm'>
+                    <div className='row'>
+                        <div className='col-5 Drop'>
+                            <label htmlFor="dropdown" className='input-label'>Starting Session:</label>
+                            <Form.Select id="dropdown" value={inputdata.starting || ""} name="starting" autoComplete='off' onChange={data}>
+                                <option>Open this select menu</option>
+                                {sessions.map(session => (
+                                    <option key={session} value={session}>{session}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                        <div className='col-5'>
+                            <label htmlFor="dropdown" className='input-label'>Ending Session:</label>
+                            <Form.Select id="dropdown" value={inputdata.ending || ""} name="ending" autoComplete='off' onChange={data}>
+                                <option>Open this select menu</option>
+                                {filteredEndingSessions.map(session => (
+                                    <option key={session} value={session}>{session}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                        <div className='col-2'>
+                            <button className='form-btn btn pt-3 pb-3 px-5' onClick={!bolin ? addinputdata : updateinfo}>{!bolin ? `Add` : `Update data`}</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            }
             <table className='table table-bordered text-center table-hover bg-dark'>
                 <thead>
                     <tr>
                         <th>Starting Session</th>
                         <th>Ending Session</th>
-                        <th>Delete</th>
+                        {accessId === '0' && <th>Delete</th> }
                     </tr>
                 </thead>
                 <tbody>
                     {curriculums && curriculums.map((item, i) => (
                         <tr key={i} className='nav-item'>
                             <td>
-                                <Link to={`/syllabus/${item.id}`} className='nav-link'>
+                                <Link to={`/syllabus/${accessId}/${item.id}`} className='nav-link'>
                                     <span>{item.starting}</span>
                                 </Link>
                             </td>
                             <td>
-                                <Link to={`/syllabus/${item.id}`} className='nav-link'>
+                                <Link to={`/syllabus/${accessId}/${item.id}`} className='nav-link'>
                                     <span>{item.ending}</span>
                                 </Link>
                             </td>
-                            <td>
-                                <FontAwesomeIcon icon={faTrash} onClick={() => deletedata(item.id)} />
-                            </td>
+                            {accessId === '0' &&
+                                <td>
+                                    <FontAwesomeIcon icon={faTrash} onClick={() => deletedata(item.id)} />
+                                </td>
+                            }
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div className='row'>
-                <Link to='/vision'>
+                <Link to={`/vision/${accessId}`}>
                     <button type='submit' className='btn btn-warning'>Back</button>
                 </Link>
             </div>

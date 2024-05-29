@@ -174,8 +174,8 @@ class Assessment(models.Model):
 
 class Outline(models.Model):
     upCourse=models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
-    heading=models.CharField(max_length=20)    
-    description=models.CharField(max_length=20)
+    heading=models.CharField(max_length=50)    
+    description=models.CharField(max_length=200)
     nonfaceToface=models.IntegerField()
     lecture=models.IntegerField()
     exercise=models.IntegerField()

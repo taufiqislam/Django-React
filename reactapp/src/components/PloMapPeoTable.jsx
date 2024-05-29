@@ -7,7 +7,7 @@ import axios from 'axios';
 import DataContext from './Context/DataContext';
 export const PloMapPeoTable = () => {
   const [plos, setPlos] = useState([]);
-  const { curriculumId, syllabusId } = useParams();
+  const { accessId, curriculumId, syllabusId } = useParams();
   const {upCurriculums} = useContext(DataContext);
   const {upSyllabuses} = useContext(DataContext);
   useEffect(() => {
@@ -162,18 +162,23 @@ const handleSave = async () => {
                         {
                             peos.map((peo,peoIndex)=>(
                                 <td>
-                                  <select
-                                    name="mapping"
-                                    id="mapping"
-                                    className='form-select'
-                                    value={localMapping[`${plo.id}-${peo.id}`] || ''}
-                                    onChange={(e) => handleMappingChange(plo.id, peo.id, e.target.value)}
-                                  >
-                                    <option value="">select</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                  </select>
+                                  {accessId === '0' &&
+                                    <select
+                                      name="mapping"
+                                      id="mapping"
+                                      className='form-select'
+                                      value={localMapping[`${plo.id}-${peo.id}`] || ''}
+                                      onChange={(e) => handleMappingChange(plo.id, peo.id, e.target.value)}
+                                    >
+                                      <option value="">select</option>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                    </select>
+                                  }
+                                  {accessId === '1' &&
+                                    localMapping[`${plo.id}-${peo.id}`]
+                                  }
                                 </td>
                             ))
                         }
@@ -185,17 +190,19 @@ const handleSave = async () => {
                 </tr>
             </tbody>
         </table>
+        {accessId === '0' &&
         <button type='button' className='btn btn-success mb-5' onClick={handleSave}>Save</button>
+        }
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to= {`/plo/${curriculumId}/${syllabusId}`}>
+              <Link to= {`/plo/${accessId}/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
             <Link
-                to={(isComplete() && savedMapping) ? `/course/${curriculumId}/${syllabusId}` : '#'}
+                to={(isComplete() && savedMapping) ? `/course/${accessId}/${curriculumId}/${syllabusId}` : '#'}
                 onClick={(e) => {
                     if (!isComplete()) {
                       e.preventDefault();

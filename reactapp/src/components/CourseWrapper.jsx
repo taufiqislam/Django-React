@@ -14,7 +14,7 @@ uuidv4()
 export const CourseWrapper = () => {
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
-    const { curriculumId, syllabusId } = useParams();
+    const { accessId, curriculumId, syllabusId } = useParams();
     const {upCourses,setUpCourses} = useContext(DataContext);
     const [courses, setCourses] = useState([])
 
@@ -104,14 +104,17 @@ export const CourseWrapper = () => {
             <img src={logo} alt="Logo" />
           </div>
         </div>
-        
-        <CourseForm addCourse={addCourse}/>
+        {accessId === '0' &&
+          <CourseForm addCourse={addCourse}/>
+        }
         <table className='table table-bordered table-hover border-dark text-center'>
           <thead>
             <tr>
               <th>Course Code</th>
               <th>Course Title</th>
-              <th></th>
+              {accessId === '0' &&
+                <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -122,19 +125,21 @@ export const CourseWrapper = () => {
               ) : (
                 <tr className='nav-item'>
                     <td>
-                        <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
+                        <Link to={`/courseinfo/${accessId}/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.code}</span>
                         </Link>
                     </td>
                     <td>
-                        <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
+                        <Link to={`/courseinfo/${accessId}/${curriculumId}/${syllabusId}/${course.id}`} className='nav-link' onClick={() => handleClick(course)}>
                         <span>{course.title}</span>
                         </Link>
                     </td>
+                    {accessId === '0' &&
                     <td>
                     <FontAwesomeIcon icon={faPenToSquare} onClick={() => editCourse(course.id)}/>
                     <FontAwesomeIcon icon={faTrash} onClick={() => deleteCourse(course.id)}/>
                     </td>
+                    }
                 </tr>
                 )))
                 
@@ -144,7 +149,7 @@ export const CourseWrapper = () => {
         
         <div className='row'>
             <div className='text-start'>
-              <Link to={`/plomappeo/${curriculumId}/${syllabusId}`}>
+              <Link to={`/plomappeo/${accessId}/${curriculumId}/${syllabusId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               

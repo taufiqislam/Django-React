@@ -11,7 +11,7 @@ uuidv4()
 
 export const CourseObjectiveWrapper = () => {
 
-  const { curriculumId, syllabusId, courseId } = useParams();
+  const { accessId, curriculumId, syllabusId, courseId } = useParams();
     const [courseObjectives, setCourseObjectives] = useState([])
     const {upCurriculums} = useContext(DataContext);
     const {upSyllabuses} = useContext(DataContext);
@@ -107,13 +107,17 @@ export const CourseObjectiveWrapper = () => {
           </div>
         </div>
         
-        <CourseObjectiveForm addCourseObjective={addCourseObjective}/>
+        {accessId === '0' &&
+          <CourseObjectiveForm addCourseObjective={addCourseObjective}/>
+        }
         <table className='table table-bordered table-hover border-dark text-center'>
           <thead>
             <tr>
               <th>CO ID</th>
               <th>CO Description</th>
+              {accessId === '0' &&
               <th></th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -122,7 +126,7 @@ export const CourseObjectiveWrapper = () => {
               courseObjective.isEditing ? (
                 <EditCourseObjectiveForm editCourseObjective={editDescriptionCourseObjective} description={courseObjective}/>
               ) : (
-                <CourseObjective description={courseObjective} key={courseObjective.id} index={index} deleteCourseObjective={deleteCourseObjective} editCourseObjective={editCourseObjective}/>
+                <CourseObjective description={courseObjective} key={courseObjective.id} index={index} deleteCourseObjective={deleteCourseObjective} editCourseObjective={editCourseObjective} accessId={accessId}/>
                 )))
                 
             }
@@ -130,14 +134,14 @@ export const CourseObjectiveWrapper = () => {
         </table>
         <div className='row'>
             <div className='col-6 text-start'>
-              <Link to={`/courseinfo/${curriculumId}/${syllabusId}/${courseId}`}>
+              <Link to={`/courseinfo/${accessId}/${curriculumId}/${syllabusId}/${courseId}`}>
                 <button type='submit' className='btn btn-warning'>Back</button>
               </Link>
               
             </div>
             <div className='col-6 text-end'>
               <Link
-                  to={isComplete() ? `/clo/${curriculumId}/${syllabusId}/${courseId}` : '#'}
+                  to={isComplete() ? `/clo/${accessId}/${curriculumId}/${syllabusId}/${courseId}` : '#'}
                   onClick={(e) => {
                       if (!isComplete()) {
                           e.preventDefault();
